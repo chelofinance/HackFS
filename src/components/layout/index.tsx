@@ -34,7 +34,7 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
           <div className="flex flex-col h-screen p-10 z-50">{children}</div>
         </div>
       </div>
-      <footer className="flex h-24 w-full items-center justify-center border-t">
+      <footer className="flex h-24 w-full items-center justify-center bg-black text-white border-t-2 ">
         <a
           className="flex items-center justify-center gap-2"
           href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"

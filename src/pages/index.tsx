@@ -1,6 +1,6 @@
 import type {NextPage} from "next";
 import {uploadDirectory} from "@helpers/storage/ipfs";
-import {Card} from "@components/Card";
+import Card from "@components/common/card";
 
 const Home: NextPage = () => {
   const handleFiles = async (event: React.ChangeEvent<HTMLInputElement>) => {
