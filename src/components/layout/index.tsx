@@ -31,7 +31,7 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
       <Navbar />
       <div className="flex flex-row font-montserrat h-full bg-black text-white bg-gradient-to-b via-black from-blue-900 to-black">
         <div className="w-full h-full p-4 bg-no-repeat relative">
-          <div className="z-50">{children}</div>
+          <div className="flex flex-col h-screen p-10 z-50">{children}</div>
         </div>
       </div>
       <footer className="flex h-24 w-full items-center justify-center border-t">

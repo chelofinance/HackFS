@@ -5,13 +5,8 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const Card: React.FunctionComponent<CardProps> = (props) => {
   return (
-    <div
-      className={clsx(
-        "p-4 bg-blue-900 border border-blue-800 text-white rounded-md",
-        props.className
-      )}
-    >
-      {props.children}
+    <div className={clsx("p-4 bg-gray-900 opacity-70 text-white rounded-md", props.className)}>
+      <div className="opacity-100 h-full w-full">{props.children}</div>
     </div>
   );
 };
