@@ -1,6 +1,7 @@
 import React from "react";
 import {
-  LineChart,
+  AreaChart,
+  Area,
   Line,
   Legend,
   XAxis,
@@ -20,10 +21,9 @@ const Chart: React.FunctionComponent<ChartProps> = ({data, chartOption}) => {
   return (
     <div className="pt-2 ml-2 w-full h-full">
       <ResponsiveContainer width="100%" height="100%">
-        <LineChart
-          width={500}
-          height={300}
+        <AreaChart
           data={data}
+          barCategoryGap={1}
           margin={{
             top: 5,
             right: 30,
@@ -31,14 +31,47 @@ const Chart: React.FunctionComponent<ChartProps> = ({data, chartOption}) => {
             bottom: 20,
           }}
         >
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis />
+          <CartesianGrid stroke="transparent" />
+          <XAxis
+            dataKey="name"
+            tickLine={false}
+            axisLine={false}
+            interval="preserveEnd"
+            tickMargin={14}
+            minTickGap={80}
+          />
+          <YAxis
+            hide
+            type="number"
+            tickMargin={16}
+            orientation="left"
+            axisLine={false}
+            tickLine={false}
+            interval="preserveEnd"
+            minTickGap={80}
+          />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="pv" stroke="#8884d8" activeDot={{r: 8}} />
-          <Line type="monotone" dataKey="uv" stroke="#82ca9d" />
-        </LineChart>
+          <Area
+            type="monotone"
+            dataKey="uv"
+            stroke="#8884d8"
+            fill="blue"
+            strokeWidth={2}
+            dot={false}
+            opacity={"0.4"}
+          />
+          <Tooltip
+            cursor={true}
+            labelStyle={{paddingTop: 4}}
+            contentStyle={{
+              padding: "10px 14px",
+              borderRadius: 10,
+              borderColor: "var(--c-zircon)",
+            }}
+            wrapperStyle={{top: -70, left: -10}}
+          />
+        </AreaChart>
       </ResponsiveContainer>
     </div>
   );

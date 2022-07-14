@@ -59,7 +59,7 @@ const App: React.FunctionComponent<{}> = () => {
             <Chart data={MOCK_CHART} />
           </Card>
         </div>
-        <Table data={mockData} headers={MINI_DAO_HEADERS} />
+        <Table classes={{root: "mt-10"}} data={mockData} headers={MINI_DAO_HEADERS} />
       </div>
     </div>
   );

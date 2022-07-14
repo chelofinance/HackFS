@@ -1,4 +1,5 @@
 import React from "react";
+import clsx from "clsx";
 
 interface DataTableProps {
   data: Record<string, unknown>[];
@@ -6,11 +7,11 @@ interface DataTableProps {
   setSelected?: Function;
   custom?: Record<string, React.FunctionComponent<Record<string, unknown>>>;
   text?: string;
-  maxHeight?: number;
+  classes?: Partial<Record<"root", string>>;
 }
 
 const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
-  const {data, headers, text, setSelected, custom, maxHeight} = props;
+  const {data, headers, text, setSelected, custom, classes} = props;
   const selectRow = (row: any) => {
     setSelected && setSelected(row);
   };
@@ -22,9 +23,9 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
 
   return (
     <>
-      <div className="container text-white">
-        <table className="text-left w-full">
-          <thead className="bg-black flex text-white w-full">
+      <div className={clsx("container text-white rounded-lg overflow-hidden", classes?.root)}>
+        <table className="text-left w-full bg-gray-900/75">
+          <thead className="flex text-white w-full">
             <tr className="flex w-full mb-4">
               {headers.map((head: any, idx: number) => {
                 return (
@@ -35,10 +36,11 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
               })}
             </tr>
           </thead>
-          <tbody className="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll h-80 w-full">
+          <tbody className="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll max-h-80 w-full">
             {data.map((row: any, idx: number) => (
               <tr
-                className="flex w-full mb-4"
+                key={idx}
+                className="flex w-full border-t border-gray-800"
                 onClick={() => {
                   selectRow(row);
                 }}
