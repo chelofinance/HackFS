@@ -24,6 +24,7 @@
     "@tailwindcss/forms": "^0.4.0",
     "@tailwindcss/line-clamp": "^0.3.1",
     "@tailwindcss/typography": "^0.5.2",
+    "@types/aos": "^3.0.4",
     "@types/humps": "^2.0.0",
     "@web3-react/injected-connector": "^6.0.7",
     "@web3auth/base": "^1.0.0",
@@ -31,10 +32,15 @@
     "@web3auth/solana-provider": "^1.0.0",
     "@web3auth/web3auth": "^1.0.0",
     "antd": "^4.16.6",
+    "aos": "^2.3.4",
     "autoprefixer": "^10.4.2",
     "axios": "^0.21.1",
     "camelcase-keys": "^6.2.2",
+<<<<<<< HEAD
+    "clsx": "^1.1.1",
+=======
     "clsx": "^1.2.1",
+>>>>>>> dbbf04a3f58d789a859935e0b8d13de33cb52dbc
     "ethers": "^5.6.9",
     "humps": "^2.0.1",
     "js-cookie": "^2.2.1",
