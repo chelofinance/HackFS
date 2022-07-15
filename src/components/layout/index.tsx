@@ -1,10 +1,12 @@
 import React from "react";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
-import {switchNetwork, addNetwork} from "@helpers/index";
+import { switchNetwork, addNetwork } from "@helpers/index";
 import Navbar from "@components/layout/Navbar";
 
-const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}) => {
+const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({
+  children,
+}) => {
   const router = useRouter();
 
   const handleNetworkChange = async () => {
@@ -15,10 +17,10 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
         await addNetwork({
           chainId: 4,
           name: "Rinkeby testnet",
-          currency: {name: "RinkebyETH", decimals: 18, symbol: "rETH"},
+          currency: { name: "RinkebyETH", decimals: 18, symbol: "rETH" },
           rpcUrl: "https://rinkeby.infura.io/v3/",
         });
-      else console.log({err});
+      else console.log({ err });
     }
   };
 
@@ -29,9 +31,9 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
   return (
     <>
       <Navbar />
-      <div className="flex flex-row font-montserrat h-full bg-black text-white bg-gradient-to-b via-black from-blue-900/60 to-black">
-        <div className="w-full h-full p-4 bg-no-repeat relative">
-          <div className="flex flex-col h-screen p-10 z-50">{children}</div>
+      <div className="flex flex-row font-montserrat h-full bg-black text-white ">
+        <div className="w-full h-full bg-no-repeat relative bg-gradient-to-b via-black from-blue-900/60 to-black">
+          <div className="flex flex-col min-h-screen z-50">{children}</div>
         </div>
       </div>
       <footer className="flex h-24 w-full items-center justify-center bg-black text-white border-t-2 ">
