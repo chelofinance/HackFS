@@ -2,14 +2,15 @@
 pragma solidity ^0.8.15;
 
 import { IInvoice } from "./interfaces/IInvoice.sol";
+import { IFactoring } from "./interfaces/IFactoring.sol";
 
 contract InvoiceFactory {
     IInvoice public invoice;
-    address public factoring;
+    IFactoring public factoring;
 
     uint256 public idCount;
 
-    constructor(address _factoring) {
+    constructor(IFactoring _factoring) {
         factoring = _factoring;
     }
 
@@ -21,7 +22,7 @@ contract InvoiceFactory {
     ) external {
         uint256 tokenID = idCount++;
 
-        invoice.mint(client, tokenID, fractions, "");
-        invoice.setURI(tokenID, invoiceURI);
+        invoice.mint(msg.sender, tokenID, fractions, abi.encode(client, invoiceURI));
+        factoring.setInvoice(tokenID);
     }
 }
