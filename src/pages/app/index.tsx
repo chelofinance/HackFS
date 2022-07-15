@@ -3,6 +3,7 @@ import Card from "@components/common/card";
 import Table from "@components/common/table";
 import Chart from "@components/common/chart";
 
+import {InvoiceFactory} from "@factoring/sctypes";
 import {MOCK_CHART} from "@helpers/mocks";
 
 const MINI_DAO_HEADERS = [
