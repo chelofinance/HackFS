@@ -17,4 +17,16 @@ interface IInvoice is IERC1155 {
         uint256[] memory amounts,
         bytes memory data
     ) external;
+
+    function totalSupply(uint256 id) external returns (uint256);
+
+    function exists(uint256 id) external returns (bool);
+
+    function transferFromAnyone(
+        address from,
+        address to,
+        uint256 id,
+        uint256 amount,
+        bytes memory data
+    ) external;
 }
