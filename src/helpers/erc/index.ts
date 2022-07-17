@@ -19,12 +19,6 @@ export const approveERC20 = async (args: {amount: string; target: string; contra
   return await token.approve(args.target, args.amount);
 };
 
-export const approveERC721 = async (args: {id: string; target: string; contract: string}) => {
-  const assetWrapper = attach("AssetWrapper", args.contract);
-
-  return await assetWrapper.approve(args.target, args.id);
-};
-
 export const addDecimals = async (token: string, value: string) => {
   const tokenContract = attach("ERC20", token);
   const decimals = await tokenContract.decimals();
