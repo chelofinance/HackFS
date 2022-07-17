@@ -2,24 +2,10 @@ import React from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import type { NextPage } from "next";
-import { uploadDirectory } from "@helpers/storage/ipfs";
-import Card from "@components/common/card";
+import { useRouter } from "next/router";
 
 const HomeComponent: NextPage = () => {
-  const handleFiles = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files: (File | Object)[] = Array.from(event.target.files || []);
-    const uploadContent = files.concat([
-      { mynewObject: "is awesome", isAwesome: true },
-    ]);
-
-    if (files.length <= 0) return;
-
-    try {
-      await uploadDirectory(uploadContent);
-    } catch (err: any) {
-      console.log({ err });
-    }
-  };
+  const router = useRouter();
 
   React.useEffect(() => {
     AOS.init();
@@ -45,7 +31,10 @@ const HomeComponent: NextPage = () => {
               An open and reliable system to create loans for your invoices. It
               doesnt matter if you are a DAO, a Company or small business{" "}
             </span>
-            <button className="rounded-md bg-blue-400 px-10 py-3 w-30 bg-gradient-to-b from-sky-500 to-blue-800">
+            <button
+              onClick={() => router.push("/app")}
+              className="rounded-md bg-blue-400 px-10 py-3 w-30 bg-gradient-to-b from-sky-500 to-blue-800"
+            >
               Get started
             </button>
           </div>

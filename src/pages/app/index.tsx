@@ -3,7 +3,6 @@ import Card from "@components/common/card";
 import Table from "@components/common/table";
 import Chart from "@components/common/chart";
 
-import {InvoiceFactory} from "@factoring/sctypes";
 import {MOCK_CHART} from "@helpers/mocks";
 
 const MINI_DAO_HEADERS = [
@@ -47,10 +46,10 @@ const mockData = [
 
 const App: React.FunctionComponent<{}> = () => {
   return (
-    <div className="h-full flex flex-col items-center py-10">
+    <div className="h-full flex flex-col items-center py-28">
       <div className="w-2/3 h-full">
         <h2 className="text-2xl font-thin text-gray-300 mb-5">Overview</h2>
-        <div className="flex gap-10">
+        <div className="flex gap-10 mb-20">
           <Card className="w-1/2 h-80">
             <h3 className="text-xl">Chart1</h3>
             <Chart data={MOCK_CHART} />
@@ -60,7 +59,7 @@ const App: React.FunctionComponent<{}> = () => {
             <Chart data={MOCK_CHART} />
           </Card>
         </div>
-        <Table classes={{root: "mt-10"}} data={mockData} headers={MINI_DAO_HEADERS} />
+        <Table data={mockData} headers={MINI_DAO_HEADERS} />
       </div>
     </div>
   );
