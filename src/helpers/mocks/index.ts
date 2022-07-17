@@ -1,8 +1,9 @@
-import {ethers} from "ethers";
+import { ethers } from "ethers";
 
 export const getMockInvoices = (): Invoice[] => {
   const randTokenName = (size: number) => {
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
     let ans = "";
     for (let i = 0; i < size; i++)
       ans += characters.charAt(Math.floor(Math.random() * characters.length));
@@ -14,16 +15,18 @@ export const getMockInvoices = (): Invoice[] => {
     const date = new Date();
     const start = new Date(date.getFullYear(), date.getMonth(), 1);
     const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
-    return new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+    return new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime()),
+    );
   }
 
-  return new Array(20).fill(0).map((el, id) => {
+  return new Array(10).fill(0).map((el, id) => {
     const randZeros = (max: number) => String(10 ** max).replace("1", "");
 
     const totalSupply = `100${randZeros(4)}`;
-    const fractionalPrice = `${Math.floor(Math.random() * 10 + 1)}000000000000000000${randZeros(
-      4
-    )}`;
+    const fractionalPrice = `${Math.floor(
+      Math.random() * 10 + 1,
+    )}000000000000000000${randZeros(4)}`;
     return {
       totalSupply,
       fractionalPrice,
@@ -33,7 +36,9 @@ export const getMockInvoices = (): Invoice[] => {
       receiver: ethers.Wallet.createRandom().address,
       status: Math.floor((Math.random() * 10) % 3) as 0 | 1 | 2,
       amountRepaid: "0",
-      repaymentAmount: ethers.BigNumber.from(totalSupply).mul(fractionalPrice).toString(),
+      repaymentAmount: ethers.BigNumber.from(totalSupply)
+        .mul(fractionalPrice)
+        .toString(),
       date: randomMonthDate().getTime(),
       discount: String(Math.random() * 10),
       token: {
