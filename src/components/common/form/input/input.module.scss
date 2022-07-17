@@ -1,4 +1,15 @@
-@import 'variables';
+$medida: 1920;
+
+.marginInput {
+	margin-top: 6px;
+	margin-bottom: 10px;
+}
+
+.inputStyles {
+	padding-top: calculate-vw(21, $medida);
+	padding-bottom: calculate-vw(21, $medida);
+	padding-left: calculate-vw(20, $medida);
+}
 
 .input {
 	.inputDateWithValue {
@@ -57,5 +68,19 @@
 				color: var(--color-gray-800);
 			}
 		}
+	}
+}
+
+@media (max-width: 1366px) {
+	.inputStyles {
+		padding-top: 9px;
+		padding-bottom: 9px;
+		padding-left: calculate-vw(20, $medida);
+	}
+}
+
+@media (max-width: 768px) {
+	.inputStyles {
+		padding-left: 16px;
 	}
 }

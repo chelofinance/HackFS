@@ -1,13 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from 'react';
+import * as React from "react";
 // import SVG from 'react-inlinesvg';
-import clsx from 'clsx';
+import clsx from "clsx";
 
 export interface AlertProps {
 	/**
 	 * color background.
 	 */
-	color: 'success' | 'danger';
+	color: "success" | "danger";
 	/**
 	 * Message that goes inside the alert.
 	 */
@@ -21,7 +21,7 @@ export interface AlertProps {
 /**
  * Use to notificate the user something happened
  */
-export const Alert: React.FC<AlertProps> = ({
+export const Alert: React.FC<AlertProps & React.PropsWithChildren<{}>> = ({
 	message,
 	customIcon,
 	children,
@@ -30,9 +30,9 @@ export const Alert: React.FC<AlertProps> = ({
 	return (
 		<div
 			className={clsx(
-				'flex items-center px-12 w-680 h-24 text-gray-0 text-xl rounded-10',
-				{ 'bg-alert-error': color === 'danger' },
-				{ 'bg-alert-success': color === 'success' }
+				"flex items-center px-12 w-680 h-24 text-gray-0 text-xl rounded-10",
+				{"bg-alert-error": color === "danger"},
+				{"bg-alert-success": color === "success"}
 			)}
 		>
 			{/* <SVG
