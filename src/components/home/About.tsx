@@ -58,7 +58,7 @@ const AboutUs: NextPage = () => {
                 fractionalized invoices in order to facilitate the purchase of
                 invoices by institutional and retail investors.
               </p>
-              <div className="rounded-full border border-white p-10">
+              <div className="rounded-full border-4 border-white p-10 pt-8">
                 <img src="/logo.png" className="h-52" alt="" />
               </div>
             </div>
