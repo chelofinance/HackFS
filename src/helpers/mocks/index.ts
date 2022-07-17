@@ -178,3 +178,8 @@ export const MOCK_INVOICES: Invoice[] = [
     },
   },
 ];
+
+export const timeout = (time: number) =>
+  new Promise((resolve, reject) => {
+    setTimeout(resolve, time);
+  });

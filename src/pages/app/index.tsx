@@ -55,7 +55,7 @@ const App: React.FunctionComponent<{}> = () => {
           </Card>
           <Card className="w-1/2 h-80">
             <h3 className="text-xl">Chart1</h3>
-            <Chart data={MOCK_CHART} />
+            <Chart data={[]} />
           </Card>
         </div>
         <Table data={mockData} headers={MINI_DAO_HEADERS} />

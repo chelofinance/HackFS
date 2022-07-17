@@ -4,7 +4,7 @@ import * as actionTypes from "@redux/constants";
 import {connectMetamask, isWeb3Enabled} from "@helpers/index";
 import {getDaoAddress, getAragonDAO} from "@helpers/aragon";
 
-import {MOCK_INVOICES} from "@helpers/mocks";
+import {MOCK_INVOICES, timeout} from "@helpers/mocks";
 
 export const onConnectWallet = createAsyncThunk(actionTypes.CONNECT_WALLET, async () => {
   if (!(await isWeb3Enabled())) return "";
@@ -51,8 +51,9 @@ export const onConnectDao = createAsyncThunk(
 );
 
 export const onGetInvoices = createAsyncThunk(
-  actionTypes.CONNECT_ARAGON,
+  actionTypes.GET_INVOICES,
   async (): Promise<Invoice[]> => {
+    await timeout(3000);
     return MOCK_INVOICES;
   }
 );

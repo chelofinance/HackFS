@@ -38,7 +38,9 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
 
   if (loading)
     return (
-      <div className="flex flex-col justify-center items-center font-montserrat h-full w-full bg-gradient-to-b via-black from-blue-900/60 to-black text-white "></div>
+      <div className="flex flex-col justify-center items-center font-montserrat h-screen w-full bg-gradient-to-b via-black from-blue-900/60 to-black text-white ">
+        <img src="/logo.png" width="100px" className="animate-bounce opacity-70" />
+      </div>
     );
 
   return (
