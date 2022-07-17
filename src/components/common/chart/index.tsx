@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 export interface ChartProps {
-  data: unknown[];
+  data: {xAxis: string; yAxis: number}[];
   chartOption?: unknown;
 }
 
@@ -33,7 +33,7 @@ const Chart: React.FunctionComponent<ChartProps> = ({data, chartOption}) => {
         >
           <CartesianGrid stroke="transparent" />
           <XAxis
-            dataKey="name"
+            dataKey="xAxis"
             tickLine={false}
             axisLine={false}
             interval="preserveEnd"
@@ -54,7 +54,7 @@ const Chart: React.FunctionComponent<ChartProps> = ({data, chartOption}) => {
           <Legend />
           <Area
             type="monotone"
-            dataKey="uv"
+            dataKey="yAxis"
             stroke="#8884d8"
             fill="blue"
             strokeWidth={2}

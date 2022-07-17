@@ -12,7 +12,9 @@ interface Invoice {
   issuer: string;
   receiver: string;
   status: 0 | 1 | 2;
+  date: number;
   fractionalPrice: string;
+  amountRepaid: string;
   repaymentAmount: string;
   discount: string;
   token: {

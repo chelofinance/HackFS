@@ -1,24 +1,22 @@
 import React from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import type { NextPage } from "next";
-import { uploadDirectory } from "@helpers/storage/ipfs";
+import type {NextPage} from "next";
+import {uploadDirectory} from "@helpers/storage/ipfs";
 import Card from "@components/common/card";
 import clsx from "clsx";
 
 const Info: NextPage = () => {
   const handleFiles = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files: (File | Object)[] = Array.from(event.target.files || []);
-    const uploadContent = files.concat([
-      { mynewObject: "is awesome", isAwesome: true },
-    ]);
+    const uploadContent = files.concat([{mynewObject: "is awesome", isAwesome: true}]);
 
     if (files.length <= 0) return;
 
     try {
       await uploadDirectory(uploadContent);
     } catch (err: any) {
-      console.log({ err });
+      console.log({err});
     }
   };
 
@@ -63,65 +61,49 @@ const Info: NextPage = () => {
     <div className="w-full flex flex-col items-center justify-center relative">
       <div className="w-full h-full absolute bottom-0 bg-gradient-to-br via-black from-black to-blue-900/60"></div>
       <div className="w-4/5 flex flex-col items-center justify-center gap-10 py-10">
-        {about.map(
-          ({
-            title,
-            className,
-            description,
-            dataAos,
-            dataAosImage,
-            left,
-            image,
-          }) => {
-            return (
-              <div className={className}>
-                <img
-                  src={image}
-                  className="w-1/3 lg:block hidden"
-                  alt=""
-                  data-aos={dataAosImage}
+        {about.map(({title, className, description, dataAos, dataAosImage, left, image}, i) => {
+          return (
+            <div className={className} key={i}>
+              <img
+                src={image}
+                className="w-1/3 lg:block hidden"
+                alt=""
+                data-aos={dataAosImage}
+                data-aos-duration="1000"
+                data-aos-easing="ease-in-out"
+                data-aos-mirror="true"
+                data-aos-once="false"
+              />
+              <Card className="xl:w-1/2 lg:w-2/3 w-full bg-transparent text-white rounded-xl p-10">
+                <div
+                  className="gap-10 flex flex-col items-center justify-center min-h-[24rem]"
+                  data-aos={dataAos}
                   data-aos-duration="1000"
                   data-aos-easing="ease-in-out"
                   data-aos-mirror="true"
                   data-aos-once="false"
-                />
-                <Card className="xl:w-1/2 lg:w-2/3 w-full bg-transparent text-white rounded-xl p-10">
-                  <div
-                    className="gap-10 flex flex-col items-center justify-center min-h-[24rem]"
-                    data-aos={dataAos}
-                    data-aos-duration="1000"
-                    data-aos-easing="ease-in-out"
-                    data-aos-mirror="true"
-                    data-aos-once="false"
+                >
+                  <h2
+                    className={clsx("text-sky-500 text-center font-bold text-2xl", {
+                      ["lg:text-left"]: left,
+                      ["lg:text-right"]: !left,
+                    })}
                   >
-                    <h2
-                      className={clsx(
-                        "text-sky-500 text-center font-bold text-2xl",
-                        {
-                          ["lg:text-left"]: left,
-                          ["lg:text-right"]: !left,
-                        },
-                      )}
-                    >
-                      {title}
-                    </h2>
-                    <p
-                      className={clsx(
-                        "text-primary text-center font-bold text-lg",
-                        {
-                          ["lg:text-left"]: left,
-                          ["lg:text-right"]: !left,
-                        },
-                      )}
-                    >
-                      {description}
-                    </p>
-                  </div>
-                </Card>
-              </div>
-            );
-          },
-        )}
+                    {title}
+                  </h2>
+                  <p
+                    className={clsx("text-primary text-center font-bold text-lg", {
+                      ["lg:text-left"]: left,
+                      ["lg:text-right"]: !left,
+                    })}
+                  >
+                    {description}
+                  </p>
+                </div>
+              </Card>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
