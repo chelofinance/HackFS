@@ -1,9 +1,8 @@
 import React from "react";
+
 import Card from "@components/common/card";
 import Table from "@components/common/table";
 import Chart from "@components/common/chart";
-
-import {MOCK_CHART} from "@helpers/mocks";
 
 const MINI_DAO_HEADERS = [
   {title: "Address", value: "dao"},
@@ -52,7 +51,7 @@ const App: React.FunctionComponent<{}> = () => {
         <div className="flex gap-10 mb-20">
           <Card className="w-1/2 h-80">
             <h3 className="text-xl">Chart1</h3>
-            <Chart data={MOCK_CHART} />
+            <Chart data={[]} />
           </Card>
           <Card className="w-1/2 h-80">
             <h3 className="text-xl">Chart1</h3>

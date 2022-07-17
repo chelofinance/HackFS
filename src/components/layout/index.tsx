@@ -1,13 +1,17 @@
 import React from "react";
-import { useRouter } from "next/router";
+import {useRouter} from "next/router";
 
-import { switchNetwork, addNetwork } from "@helpers/index";
+import {switchNetwork, addNetwork} from "@helpers/index";
 import Navbar from "@components/layout/Navbar";
+import {onGetInvoices} from "@redux/actions";
+import {useAppSelector, useAppDispatch} from "@redux/store";
 
-const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({
-  children,
-}) => {
-  const router = useRouter();
+const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}) => {
+  const {data: invoices, loaded} = useAppSelector((state) => state.invoices);
+  const {pathname} = useRouter();
+  const dispatch = useAppDispatch();
+  const onApp = pathname.indexOf("app") > -1;
+  const loading = onApp && !loaded;
 
   const handleNetworkChange = async () => {
     try {
@@ -17,16 +21,25 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({
         await addNetwork({
           chainId: 4,
           name: "Rinkeby testnet",
-          currency: { name: "RinkebyETH", decimals: 18, symbol: "rETH" },
+          currency: {name: "RinkebyETH", decimals: 18, symbol: "rETH"},
           rpcUrl: "https://rinkeby.infura.io/v3/",
         });
-      else console.log({ err });
+      else console.log({err});
     }
   };
 
   React.useEffect(() => {
     handleNetworkChange();
   }, []);
+
+  React.useEffect(() => {
+    if (onApp) dispatch(onGetInvoices());
+  }, [onApp]);
+
+  if (loading)
+    return (
+      <div className="flex flex-col justify-center items-center font-montserrat h-full w-full bg-gradient-to-b via-black from-blue-900/60 to-black text-white "></div>
+    );
 
   return (
     <>
