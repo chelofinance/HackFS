@@ -1,8 +1,8 @@
 import React from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import type {NextPage} from "next";
-import {useRouter} from "next/router";
+import type { NextPage } from "next";
+import { useRouter } from "next/router";
 
 const HomeComponent: NextPage = () => {
   const router = useRouter();
@@ -17,13 +17,19 @@ const HomeComponent: NextPage = () => {
         <img src="/background.webp" className="w-full h-full" />
       </div>
       <div className="z-10 flex flex-col justify-center items-center w-full min-h-screen">
-        <div className="flex justify-between items-center w-full pl-24 pr-36">
-          <img src="/main_image.png" className="w-2/5" alt="" />
-          <div className="w-1/3 flex flex-col items-end gap-10">
-            <h1 className="text-6xl text-right font-bold">Invoice Loans system for Web3</h1>
-            <span className="font-thin text-xl text-right">
-              An open and reliable system to create loans for your invoices. It doesnt matter if you
-              are a DAO, a Company or small business{" "}
+        <div className="flex justify-between items-center w-full md:pl-24 md:pr-36 pr-24 pl-24">
+          <img
+            src="/main_image.png"
+            className="xl:w-2/5 w-3/5 md:block hidden"
+            alt=""
+          />
+          <div className="md:w-1/3 w-full flex flex-col md:items-end items-center gap-10">
+            <h1 className="xl:text-6xl md:text-4xl text-5xl md:text-right text-center font-bold">
+              Invoice Loans system for Web3
+            </h1>
+            <span className="font-thin text-xl md:text-right text-center">
+              An open and reliable system to create loans for your invoices. It
+              doesnt matter if you are a DAO, a Company or small business{" "}
             </span>
             <button
               onClick={() => router.push("/app")}

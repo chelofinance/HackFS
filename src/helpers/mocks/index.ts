@@ -1,44 +1,56 @@
-export const MOCK_CHART = [
-  {
-    name: "Page A",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Page C",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Page D",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Page E",
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: "Page F",
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: "Page G",
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+import { ethers } from "ethers";
+
+export const getMockInvoices = (): Invoice[] => {
+  const randTokenName = (size: number) => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let ans = "";
+    for (let i = 0; i < size; i++)
+      ans += characters.charAt(Math.floor(Math.random() * characters.length));
+
+    return ans.toUpperCase();
+  };
+
+  function randomMonthDate() {
+    const date = new Date();
+    const start = new Date(date.getFullYear(), date.getMonth(), 1);
+    const end = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+    return new Date(
+      start.getTime() + Math.random() * (end.getTime() - start.getTime()),
+    );
+  }
+
+  return new Array(10).fill(0).map((el, id) => {
+    const randZeros = (max: number) => String(10 ** max).replace("1", "");
+
+    const totalSupply = `100${randZeros(4)}`;
+    const fractionalPrice = `${Math.floor(
+      Math.random() * 10 + 1,
+    )}000000000000000000${randZeros(4)}`;
+    return {
+      totalSupply,
+      fractionalPrice,
+      id: String(id),
+      uri: "ipfs://bafybeidqymisza5rarnc6phx3jovi4i55bopcfkwgo2de4a5jb2gzil2ru",
+      issuer: ethers.Wallet.createRandom().address,
+      receiver: ethers.Wallet.createRandom().address,
+      status: Math.floor((Math.random() * 10) % 3) as 0 | 1 | 2,
+      amountRepaid: "0",
+      repaymentAmount: ethers.BigNumber.from(totalSupply)
+        .mul(fractionalPrice)
+        .toString(),
+      date: randomMonthDate().getTime(),
+      discount: String(Math.random() * 10),
+      token: {
+        address: ethers.Wallet.createRandom().address,
+        decimals: 18,
+        symbol: randTokenName(6),
+      },
+    };
+  });
+};
+
+export const timeout = (time: number) =>
+  new Promise((resolve, reject) => {
+    setTimeout(resolve, time);
+  });

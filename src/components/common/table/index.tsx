@@ -23,7 +23,7 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
 
   return (
     <>
-      <div className={clsx("container text-white rounded-lg overflow-hidden", classes?.root)}>
+      <div className={clsx("text-white rounded-lg overflow-hidden", classes?.root)}>
         <table className="text-left w-full bg-gray-900/75">
           <thead className="flex text-white w-full">
             <tr className="flex w-full mb-4">
