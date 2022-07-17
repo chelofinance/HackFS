@@ -1,13 +1,15 @@
 import React from "react";
 import type { NextPage } from "next";
 import HomeComponent from "@components/home/Home";
-import About from "@components/home/About";
+import Info from "@components/home/infoSection";
+import AboutUs from "@components/home/About";
 
 const Home: NextPage = () => {
   return (
     <>
       <HomeComponent />
-      <About />
+      <AboutUs />
+      <Info />
     </>
   );
 };
