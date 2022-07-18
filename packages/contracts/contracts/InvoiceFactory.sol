@@ -19,13 +19,13 @@ contract InvoiceFactory {
     function createInvoice(
         address client,
         uint256 fractions,
-        uint256 fractionalPrice,
         string memory invoiceURI,
         IERC20 token
     ) external {
         uint256 tokenID = idCount++;
 
         invoice.mint(msg.sender, tokenID, fractions, abi.encode(invoiceURI));
+        uint256 fractionalPrice = factoring.calculateFraction(msg.value, fractions);
         factoring.setInvoice(tokenID, fractionalPrice, msg.sender, client, token);
     }
 }
