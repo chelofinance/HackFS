@@ -7,11 +7,28 @@ import { IFactoring, InvoiceMeta, Status } from "./interfaces/IFactoring.sol";
 import { IInvoice } from "./interfaces/IInvoice.sol";
 
 contract Factoring is IFactoring {
+    uint256 public discountRate;
     IInvoice public invoice;
     mapping(uint256 => InvoiceMeta) public invoices;
 
     constructor(IInvoice _invoice) {
         invoice = _invoice;
+    }
+
+    function setDiscountRate(uint256 newDiscount) public {
+        require(metadata.issuer == msg.sender, "Factoring:only issuer approves invoice");
+        require(1 < newDiscount < -1, "Invalid discount rate type: In between 1 and -1.");
+        discountRate = newDiscount;
+    }
+
+    function calculateFraction(uint256 principalAmount,
+        uint256 periods) 
+    public view returns (uint256) {
+        require(periods > 0, "The minimun number of periods for an invoice is 1.")
+        uint256 discountedPrincipal = principalAmount * (1 - discountRate);
+        uint256 fractionPrice = discountedPrincipal / periods;
+        require(discountedPrincipal == (fractionPrice * periods));
+        return fractionPrice;
     }
 
     function setInvoice(
