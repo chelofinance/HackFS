@@ -5,6 +5,7 @@ import type { NextPage } from "next";
 import { uploadDirectory } from "@helpers/storage/ipfs";
 import Card from "@components/common/card";
 import clsx from "clsx";
+import Card2 from "@components/common/card/card2";
 
 const AboutUs: NextPage = () => {
   const handleFiles = async (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,7 +38,7 @@ const AboutUs: NextPage = () => {
           data-aos-mirror="true"
           data-aos-once="false"
         >
-          <Card className="w-full bg-transparent  text-white rounded-xm border border-sky-500 overflow-hidden relative">
+          <Card2 className="w-full bg-transparent  text-white rounded-xm border border-sky-500 overflow-hidden relative">
             <div className="absolute w-full h-full bg-black opacity-50"></div>
             <div className="gap-16 flex flex-col items-center justify-center py-16 px-28 relative">
               <h2
@@ -63,7 +64,7 @@ const AboutUs: NextPage = () => {
                 <img src="/logo.png" className="h-52" alt="" />
               </div>
             </div>
-          </Card>
+          </Card2>
         </div>
       </div>
     </div>
