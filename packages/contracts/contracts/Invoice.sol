@@ -16,8 +16,6 @@ contract Invoice is IInvoice, ERC1155, AccessControl, ERC1155Supply, ERC1155URIS
 
     constructor(string memory _baseURI) ERC1155("") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        _grantRole(URI_SETTER_ROLE, msg.sender);
-        _grantRole(MINTER_ROLE, msg.sender);
         _setBaseURI(_baseURI);
     }
 

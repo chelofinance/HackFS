@@ -16,15 +16,14 @@ contract Factoring is IFactoring {
     }
 
     function setDiscountRate(uint256 newDiscount) public {
-        require(metadata.issuer == msg.sender, "Factoring:only issuer approves invoice");
-        require(1 < newDiscount < -1, "Invalid discount rate type: In between 1 and -1.");
-        discountRate = newDiscount;
+        //InvoiceMeta memory metadata = invoices[invoiceID];
+        //require(metadata.issuer == msg.sender, "Factoring:only issuer approves invoice");
+        //require(1 < newDiscount < -1, "Factoring:Invalid discount rate type");
+        //discountRate = newDiscount;
     }
 
-    function calculateFraction(uint256 principalAmount,
-        uint256 periods) 
-    public view returns (uint256) {
-        require(periods > 0, "The minimun number of periods for an invoice is 1.")
+    function calculateFraction(uint256 principalAmount, uint256 periods) public view returns (uint256) {
+        require(periods > 0, "Factoring:minimun number of periods is 1.");
         uint256 discountedPrincipal = principalAmount * (1 - discountRate);
         uint256 fractionPrice = discountedPrincipal / periods;
         require(discountedPrincipal == (fractionPrice * periods));
