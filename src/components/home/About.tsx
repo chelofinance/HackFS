@@ -37,8 +37,9 @@ const AboutUs: NextPage = () => {
           data-aos-mirror="true"
           data-aos-once="false"
         >
-          <Card className="w-full bg-transparent  text-white rounded-xm py-10 px-24">
-            <div className="gap-16 flex flex-col items-center justify-center">
+          <Card className="w-full bg-transparent  text-white rounded-xm border border-sky-500 overflow-hidden relative">
+            <div className="absolute w-full h-full bg-black opacity-50"></div>
+            <div className="gap-16 flex flex-col items-center justify-center py-16 px-28 relative">
               <h2
                 className={clsx("text-sky-500 text-center font-bold text-3xl")}
               >
