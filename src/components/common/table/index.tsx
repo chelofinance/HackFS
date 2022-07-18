@@ -24,7 +24,7 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
   return (
     <>
       <div className={clsx("text-white rounded-lg overflow-hidden", classes?.root)}>
-        <table className="text-left w-full bg-gray-900/75">
+        <table className="text-left w-full bg-gray-800/40">
           <thead className="flex text-white w-full">
             <tr className="flex w-full mb-4">
               {headers.map((head: any, idx: number) => {
@@ -36,11 +36,12 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
               })}
             </tr>
           </thead>
-          <tbody className="bg-grey-light flex flex-col items-center justify-between overflow-y-scroll max-h-80 w-full">
+          <tbody className="flex flex-col items-center justify-between overflow-y-scroll max-h-80 w-full">
             {data.map((row: any, idx: number) => (
               <tr
                 key={idx}
-                className="flex w-full border-t border-gray-800"
+                className={`flex w-full border-t border-gray-800 ${setSelected && "cursor-pointer"
+                  }`}
                 onClick={() => {
                   selectRow(row);
                 }}
@@ -58,10 +59,6 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
             ))}
           </tbody>
         </table>
-      </div>
-      <div className="w-full text-white flex flex-row justify-between mt-5">
-        {text && <p>{text}</p>}
-        {data.length > 10 ? <div>pages</div> : ""}
       </div>
     </>
   );
