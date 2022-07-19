@@ -23,6 +23,7 @@ contract InvoiceFactory is IInvoiceFactory {
         address client,
         uint256 fractions,
         uint256 fractionalPrice,
+        uint256 repaymentAmount,
         string memory invoiceURI,
         IERC20 token
     ) external {
@@ -30,7 +31,7 @@ contract InvoiceFactory is IInvoiceFactory {
 
         invoice.mint(msg.sender, tokenID, fractions, abi.encode(invoiceURI));
         //uint256 fractionalPrice = factoring.calculateFraction(msg.value, fractions);
-        factoring.setInvoice(tokenID, fractionalPrice, msg.sender, client, token);
+        factoring.setInvoice(tokenID, repaymentAmount, fractionalPrice, msg.sender, client, token);
         emit InvoiceCreated(tokenID);
     }
 }

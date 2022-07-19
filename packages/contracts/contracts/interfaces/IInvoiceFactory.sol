@@ -10,6 +10,7 @@ interface IInvoiceFactory {
         address client,
         uint256 fractions,
         uint256 fractionalPrice,
+        uint256 repaymentAmount,
         string memory invoiceURI,
         IERC20 token
     ) external;
