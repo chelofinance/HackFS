@@ -24,7 +24,7 @@ export const writeJsonFile = (args: {path: string; data: Object}) => {
     null,
     2,
   );
-  console.log("Writting", appRoot + args.path);
+  console.log("Writting", appRoot + "/packages/contracts/" + args.path);
   console.log(parsedData);
   fs.writeFileSync(appRoot + args.path, parsedData);
 };

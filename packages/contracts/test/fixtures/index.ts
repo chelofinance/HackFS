@@ -1,8 +1,8 @@
-import hre, {ethers} from "hardhat";
-import {deploy} from "@utils/contracts";
+import hre from "hardhat";
 import {Factoring, Invoice, InvoiceFactory, MockERC20} from "@sctypes/index";
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import {InvoiceFactoryInterface} from "@sctypes/contracts/InvoiceFactory";
+
+import {deployProtocol} from "@utils/protocol";
 
 interface InvoiceFactoryFixture {
   factoring: Factoring;
@@ -14,29 +14,7 @@ interface InvoiceFactoryFixture {
 }
 
 export const invoiceFactoryFixture = async (): Promise<InvoiceFactoryFixture> => {
-  const accounts = await ethers.getSigners();
-  const baseURI = "https://localhost:3000/";
-
-  const erc20: MockERC20 = await deploy(hre, "MockERC20", accounts[0], []);
-  const invoice: Invoice = await deploy(hre, "Invoice", accounts[0], [baseURI]);
-  const factoring: Factoring = await deploy(hre, "Factoring", accounts[0], [invoice.address]);
-  const invoiceFactory: InvoiceFactory = await deploy(hre, "InvoiceFactory", accounts[0], [
-    factoring.address,
-    invoice.address,
-  ]);
-
-  await invoice.grantRole(await invoice.MINTER_ROLE(), invoiceFactory.address);
-  await factoring.grantRole(await factoring.INVOICE_FACTORY(), invoiceFactory.address);
-  await invoice.grantRole(await invoice.FACTORING_ROLE(), factoring.address);
-
-  return {
-    factoring,
-    invoice,
-    invoiceFactory,
-    erc20,
-    accounts,
-    baseURI,
-  };
+  return await deployProtocol(hre);
 };
 
 interface InvoiceFactoryWithInvoiceFixture extends InvoiceFactoryFixture {

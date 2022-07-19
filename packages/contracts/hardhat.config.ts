@@ -24,6 +24,10 @@ const config: HardhatUserConfig = {
     hardhat: {
       accounts: {},
     },
+    polygon: {
+      url: process.env.POLYGON_PROVIDER,
+      accounts: [process.env.PRIVATE_KEY || ""],
+    },
   },
   paths: {
     artifacts: "./artifacts",
