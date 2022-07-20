@@ -5,7 +5,7 @@ import {HardhatRuntimeEnvironment} from "hardhat/types";
 export const loadJsonFile = (file: string) => {
   const appRoot = require("app-root-path");
   try {
-    const data = fs.readFileSync(appRoot + file);
+    const data = fs.readFileSync(appRoot + "/packages/contracts/" + file);
     return JSON.parse(data as any);
   } catch (err) {
     console.log("ERR", err);

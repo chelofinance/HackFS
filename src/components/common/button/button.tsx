@@ -1,7 +1,7 @@
 import Link from "next/link";
 import * as React from "react";
-import { Typography } from "../typography";
-import { Spinner } from "../spinner/spinner";
+import {Typography} from "../typography";
+import {Spinner} from "../spinner/spinner";
 import clsx from "clsx";
 export interface ButtonProps {
   label?: string;
@@ -11,6 +11,7 @@ export interface ButtonProps {
   loading?: boolean;
   className?: string;
   labelProps?: string;
+  colored?: boolean;
   icon?: any;
   target?: any;
   iconProps?: string;
@@ -19,9 +20,7 @@ export interface ButtonProps {
 /**
  * Primary UI component for user interaction
  */
-export const Button: React.FC<
-  ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
-> = ({
+export const Button: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> = ({
   label,
   disabled,
   loading,
@@ -31,6 +30,7 @@ export const Button: React.FC<
   children,
   icon,
   iconProps,
+  colored,
   href = null,
   ...props
 }) => {
@@ -52,9 +52,7 @@ export const Button: React.FC<
               <Typography type="smallTitle">
                 <div className="flex items-center justify-center">
                   {loading && <Spinner type="loadingButton" />}
-                  <span className={clsx(labelProps && labelProps)}>
-                    {label}
-                  </span>
+                  <span className={clsx(labelProps && labelProps)}>{label}</span>
                 </div>
               </Typography>
             ) : (
@@ -68,9 +66,13 @@ export const Button: React.FC<
           type="button"
           disabled={disabled}
           onClick={onClick}
-          className={clsx(`rounded-lg focus:outline-none ${className}`, {
-            "disabled:bg-gray-1 disabled:text-gray-0 ": disabled,
-          })}
+          className={clsx(
+            `rounded-lg focus:outline-none ${className}`,
+            {
+              "disabled:bg-gray-1 disabled:text-gray-0 ": disabled,
+            },
+            colored && "bg-gradient-to-b from-sky-500 to-blue-800"
+          )}
           {...props}
         >
           {label ? (
@@ -89,42 +91,32 @@ export const Button: React.FC<
   );
 };
 
-export const ButtonContent: React.FC<
-  ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>
-> = ({
-  label,
-  disabled,
-  onClick,
-  icon,
-  href,
-  children,
-  labelProps,
-  ...props
-}) => {
-  return (
-    <>
-      {href ? (
-        <Button
-          icon={icon}
-          label={label}
-          disabled={disabled}
-          labelProps={labelProps}
-          href={href}
-          {...props}
-        />
-      ) : (
-        <Button
-          icon={icon}
-          label={label}
-          disabled={disabled}
-          onClick={onClick}
-          href={href}
-          labelProps={labelProps}
-          {...props}
-        >
-          {children}
-        </Button>
-      )}
-    </>
-  );
-};
+export const ButtonContent: React.FC<ButtonProps & React.ButtonHTMLAttributes<HTMLButtonElement>> =
+  ({label, disabled, onClick, icon, href, children, labelProps, ...props}) => {
+    return (
+      <>
+        {href ? (
+          <Button
+            icon={icon}
+            label={label}
+            disabled={disabled}
+            labelProps={labelProps}
+            href={href}
+            {...props}
+          />
+        ) : (
+          <Button
+            icon={icon}
+            label={label}
+            disabled={disabled}
+            onClick={onClick}
+            href={href}
+            labelProps={labelProps}
+            {...props}
+          >
+            {children}
+          </Button>
+        )}
+      </>
+    );
+  };

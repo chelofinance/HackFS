@@ -20,7 +20,7 @@ describe("InvoiceFactory", () => {
 
   describe("Create invoice", () => {
     it("Should mint invoice erc1155", async () => {
-      const {invoiceFactory, invoice, erc20, accounts} = await loadFixture(invoiceFactoryFixture);
+      const {invoiceFactory, invoice, erc20, accounts, baseURI} = await loadFixture(invoiceFactoryFixture);
       const invoiceId = await invoiceFactory.idCount();
       const args = {
         client: accounts[1].address,
@@ -47,6 +47,7 @@ describe("InvoiceFactory", () => {
         .withArgs(invoiceId);
 
       expect(await invoice.balanceOf(accounts[0].address, invoiceId)).to.be.equal(args.fractions);
+      expect(await invoice.uri(invoiceId)).to.be.equal(baseURI + args.invoiceURI);
     });
 
     it("Should set invoice on factoring", async () => {
