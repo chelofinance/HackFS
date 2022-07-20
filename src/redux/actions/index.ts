@@ -3,7 +3,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import * as actionTypes from "@redux/constants";
 import {connectMetamask, isWeb3Enabled} from "@helpers/index";
 import {getDaoAddress, getAragonDAO} from "@helpers/aragon";
-
+import {getInvoices} from "@helpers/factoring";
 import {getMockInvoices, timeout} from "@helpers/mocks";
 
 export const onConnectWallet = createAsyncThunk(actionTypes.CONNECT_WALLET, async () => {
@@ -53,7 +53,8 @@ export const onConnectDao = createAsyncThunk(
 export const onGetInvoices = createAsyncThunk(
   actionTypes.GET_INVOICES,
   async (): Promise<Invoice[]> => {
-    await timeout(1000);
-    return getMockInvoices();
+    return await getInvoices();
+    //await timeout(1000);
+    //return getMockInvoices();
   }
 );

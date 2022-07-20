@@ -4,44 +4,80 @@ import {Dropzone, FileItem, FileValidated} from "@dropzone-ui/react";
 import convert from "xml-js";
 
 import {Input} from "@components/common/form/input";
+import {Toggle} from "@components/common/form/toggle";
 import {Button} from "@components/common/button";
 import {SelectInputForm} from "@components/common/form/select/select";
 import {uploadDirectory} from "@helpers/storage/ipfs";
 import {getTokensList} from "@helpers/erc";
 
 import {getInvoiceJson} from "@helpers/xml";
+import {createInvoice} from "@helpers/factoring";
+
+type FormValues = {
+	issuer_contact: string;
+	issuer_email: string;
+	receiver_contact: string;
+	receiver_email: string;
+	receiver_wallet: string;
+	fractions: string;
+	fractionalPrice: string;
+	repaymentAmount: string;
+	token: string;
+};
 
 const Create: React.FunctionComponent<{}> = () => {
 	const [tokenList, setTokenList] = React.useState<any[]>([]);
 	const [files, setFiles] = React.useState<FileValidated[]>([]);
-
+	const [isAragon, setAragon] = React.useState<boolean>(false);
 	const {
 		handleSubmit,
 		register,
-		setValue,
 		formState: {errors},
 	} = useForm();
 
-	const onSubmit = async (values: any) => {
+	const handleInvoiceCreation = async (args: FormValues & {cid: string}) => {
+		if (isAragon)
+			await createInvoice({
+				dao: args.issuer_contact,
+				client: args.receiver_wallet,
+				fractions: args.fractions,
+				fractionalPrice: args.fractionalPrice,
+				repaymentAmount: args.repaymentAmount,
+				invoiceURI: args.cid,
+				token: args.token,
+			});
+		else
+			await createInvoice({
+				client: args.receiver_wallet,
+				fractions: args.fractions,
+				fractionalPrice: args.fractionalPrice,
+				repaymentAmount: args.repaymentAmount,
+				invoiceURI: args.cid,
+				token: args.token,
+			});
+	};
+
+	const onSubmit = async (values: FormValues) => {
 		const invoiceJson = getInvoiceJson({
 			...values,
 			currency: "EUR",
 			principal: values.repaymentAmount,
 		});
 
-		const uploadContent: any[] = (files as any).concat([
-			{
-				content: convert.json2xml(JSON.stringify(invoiceJson), {}),
-				name: "invoice_xml.xml",
-				type: "application/xml",
-			},
-		]);
-
-		if (files.length <= 0) return;
+		const uploadContent: any[] = files
+			.map(({file}) => file as any)
+			.concat([
+				{
+					content: convert.json2xml(JSON.stringify(invoiceJson), {}),
+					name: "invoice_xml.xml",
+					type: "application/xml",
+				},
+			]);
 
 		try {
 			const cid = await uploadDirectory(uploadContent);
-			console.log(cid.toString());
+			console.log({cid: cid.toString()});
+			await handleInvoiceCreation({...values, cid});
 		} catch (err: any) {
 			console.log({err});
 		}
@@ -66,13 +102,21 @@ const Create: React.FunctionComponent<{}> = () => {
 				>
 					<div className="h-full w-1/2 flex flex-col items-start">
 						<h4 className="text-xl w-full align-left">Issuer/DAO</h4>
-						<Input
-							labelVisible
-							title="Contact/Name"
-							name="issuer_contact"
-							register={register}
-							className="mb-5"
-						/>
+						<div className="flex items-center gap-10 w-full pr-4">
+							<Input
+								labelVisible
+								title={isAragon ? "DAO name" : "Contact"}
+								name="issuer_contact"
+								register={register}
+								className="mb-5 flex-1"
+							/>
+							<Toggle
+								label="Aragon DAO?"
+								isActive={isAragon}
+								setActive={setAragon}
+								register={register}
+							/>
+						</div>
 						<Input
 							labelVisible
 							title="Email"

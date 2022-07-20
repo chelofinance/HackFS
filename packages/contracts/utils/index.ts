@@ -26,7 +26,7 @@ export const writeJsonFile = (args: {path: string; data: Object}) => {
   );
   console.log("Writting", appRoot + "/packages/contracts/" + args.path);
   console.log(parsedData);
-  fs.writeFileSync(appRoot + args.path, parsedData);
+  fs.writeFileSync(appRoot + "/packages/contracts/" + args.path, parsedData);
 };
 
 export const increaseTime = async (hre: HardhatRuntimeEnvironment, time: BigNumberish) => {

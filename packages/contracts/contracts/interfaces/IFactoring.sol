@@ -14,6 +14,7 @@ struct InvoiceMeta {
     uint256 repaymentAmount;
     uint256 fractionalPrice;
     uint256 amountRepaid;
+    uint256 blockNumber;
     address issuer;
     address receiver;
     IERC20 token;

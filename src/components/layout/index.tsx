@@ -15,14 +15,14 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
 
   const handleNetworkChange = async () => {
     try {
-      await switchNetwork(4); //rinkeby
+      await switchNetwork(137); //rinkeby
     } catch (err: any) {
       if (err.code === 4902)
         await addNetwork({
-          chainId: 4,
-          name: "Rinkeby testnet",
-          currency: {name: "RinkebyETH", decimals: 18, symbol: "rETH"},
-          rpcUrl: "https://rinkeby.infura.io/v3/",
+          chainId: 137,
+          name: "Polygon",
+          currency: {name: "MATIC", decimals: 18, symbol: "rETH"},
+          rpcUrl: "https://polygon-rpc.com/",
         });
       else console.log({err});
     }

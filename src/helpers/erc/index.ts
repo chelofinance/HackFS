@@ -2,6 +2,7 @@ import axios from "axios";
 import {ethers} from "ethers";
 
 import {attach} from "@helpers/contracts";
+import {ERC20} from "@factoring/sctypes";
 
 export const approveERC1155 = async (args: {
   contract: string;
@@ -65,7 +66,7 @@ export const getTokensList = async () => {
 };
 
 export const loadERC20 = async (token: string) => {
-  const tokenContract = attach("ERC20", token);
+  const tokenContract = <ERC20>attach("ERC20", token);
   const [symbol, name, totalSupply, decimals] = await Promise.all([
     tokenContract.symbol(),
     tokenContract.name(),
@@ -73,5 +74,5 @@ export const loadERC20 = async (token: string) => {
     tokenContract.decimals(),
   ]);
 
-  return {symbol, name, totalSupply: totalSupply.toString(), decimals};
+  return {address: token, symbol, name, totalSupply: totalSupply.toString(), decimals};
 };

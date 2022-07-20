@@ -42,7 +42,16 @@ contract Factoring is IFactoring, AccessControl {
         address receiver,
         IERC20 token
     ) public onlyRole(INVOICE_FACTORY) {
-        invoices[invoiceID] = InvoiceMeta(Status.Created, repaymentAmount, fractionalPrice, 0, issuer, receiver, token);
+        invoices[invoiceID] = InvoiceMeta(
+            Status.Created,
+            repaymentAmount,
+            fractionalPrice,
+            0,
+            block.number,
+            issuer,
+            receiver,
+            token
+        );
     }
 
     function approveInvoice(uint256 invoiceID) public {
