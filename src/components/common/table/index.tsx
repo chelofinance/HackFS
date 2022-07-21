@@ -29,7 +29,7 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
             <tr className="flex w-full mb-4">
               {headers.map((head: any, idx: number) => {
                 return (
-                  <th key={idx} className="p-4 w-1/4">
+                  <th key={idx} className="p-4 w-1/4 text-center">
                     {head.title}
                   </th>
                 );
