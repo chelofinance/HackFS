@@ -53,7 +53,12 @@ export const onConnectDao = createAsyncThunk(
 export const onGetInvoices = createAsyncThunk(
   actionTypes.GET_INVOICES,
   async (): Promise<Invoice[]> => {
-    return await getInvoices();
+    try {
+      return await getInvoices();
+    } catch (err) {
+      console.log({err});
+      return [];
+    }
     //await timeout(1000);
     //return getMockInvoices();
   }

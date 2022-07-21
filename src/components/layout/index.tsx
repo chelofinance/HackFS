@@ -1,21 +1,24 @@
 import React from "react";
 import {useRouter} from "next/router";
 
-import {switchNetwork, addNetwork} from "@helpers/index";
+import {switchNetwork, addNetwork, connectMetamask} from "@helpers/index";
 import Navbar from "@components/layout/Navbar";
 import {onGetInvoices} from "@redux/actions";
 import {useAppSelector, useAppDispatch} from "@redux/store";
 
 const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}) => {
+  const [loadApp, setLoadApp] = React.useState(false);
   const {data: invoices, loaded} = useAppSelector((state) => state.invoices);
   const {pathname} = useRouter();
   const dispatch = useAppDispatch();
-  const onApp = pathname.indexOf("app") > -1;
+  const onApp = pathname.indexOf("app") > -1 && loadApp;
   const loading = onApp && !loaded;
 
   const handleNetworkChange = async () => {
     try {
+      await connectMetamask();
       await switchNetwork(137); //rinkeby
+      console.log("LOAD APP");
     } catch (err: any) {
       if (err.code === 4902)
         await addNetwork({
@@ -26,6 +29,7 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
         });
       else console.log({err});
     }
+    setLoadApp(true);
   };
 
   React.useEffect(() => {

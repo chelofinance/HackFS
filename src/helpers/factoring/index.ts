@@ -9,10 +9,13 @@ import {loadERC20} from "@helpers/erc";
 import {Factoring, InvoiceFactory, Invoice as InvoiceContract} from "@factoring/sctypes";
 
 export const getInvoices = async (): Promise<Invoice[]> => {
-  const invoiceFactory = <InvoiceFactory>attach("InvoiceFactory", addresses.polygon.invoiceFactory);
-  const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring);
-  const invoice = <InvoiceContract>attach("Invoice", addresses.polygon.invoice);
-  const provider = getProvider();
+  const url = process.env.NEXT_PUBLIC_POLYGON_PROVIDER;
+  const invoiceFactory = <InvoiceFactory>(
+    attach("InvoiceFactory", addresses.polygon.invoiceFactory, url)
+  );
+  const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring, url);
+  const invoice = <InvoiceContract>attach("Invoice", addresses.polygon.invoice, url);
+  const provider = getProvider(url);
 
   const idCount = await invoiceFactory.idCount();
   const invoiceData = await Promise.all(
