@@ -9,16 +9,14 @@ import { Button } from "@components/common/button";
 
 const InvoiceDetail: React.FunctionComponent<{}> = () => {
   const router = useRouter();
-  const { data } = useAppSelector((state) => state.invoices);
+  const { data: invoices } = useAppSelector((state) => state.invoices);
   const { invoice, index } = React.useMemo(() => {
-    const index = data.findIndex((inv) => inv.id == router.query.id);
+    const index = invoices.findIndex((inv) => inv.id == router.query.id);
 
     if (index < 0) router.push("/app");
 
-    return { index, invoice: data[index] };
-  }, [data]);
-
-  const { data: invoices } = useAppSelector((state) => state.invoices);
+    return { index, invoice: invoices[index] };
+  }, [invoices]);
 
   return (
     <div className="h-full flex flex-col items-center py-28">
@@ -92,8 +90,9 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
               </div>
             <div className="grid content-center">
               <Button 
-                className="rounded-md bg-gray-800/40 w-1/3"
-              >Invoice Details</Button>
+                className="rounded-md bg-gray-800/40 w-1/3">
+                Invoice Details
+              </Button>
             </div>
           </div>
           <div className="flex flex-col gap-4 lg:w-1/3 w-full">
@@ -102,8 +101,9 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
             </div>
             <div className="grid content-center">
               <Button 
-                className="rounded-md bg-gray-800/40 w-1/3"
-              >Buy</Button>
+                className="rounded-md bg-gray-800/40 w-1/3">
+                Buy
+              </Button>
             </div>
           </div>
           <div className="flex flex-col gap-4 lg:w-1/3 w-full">
@@ -113,14 +113,27 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
             </div>
             <div className="grid content-center">
               <Button 
-                className="rounded-md bg-gray-800/40 w-1/3"
-              >Pay</Button>
+                className="rounded-md bg-gray-800/40 w-1/3">
+                  Pay
+              </Button>
             </div>
           </div>
         </div>
       </div>
+      <div className="flex flex-col items-center w-full px-20 mt-16">
+        <Card 
+          className="w-1/2"
+          render={(invoice.status === 2)}>
+          <div className="grid content-center">
+            <Button
+              className="rounded-md bg-gray-800/40 w-1/3">
+              <b>Get Reward!</b>
+            </Button>
+          </div>
+        </Card>
+      </div>
     </div>
   );
-};
+}
 
 export default InvoiceDetail;
