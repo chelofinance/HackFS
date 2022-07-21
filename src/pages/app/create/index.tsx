@@ -98,7 +98,7 @@ const Create: React.FunctionComponent<{}> = () => {
 				<h2 className="text-4xl w-full align-left mb-10">Create Invoice</h2>
 				<form
 					className="w-full flex flex-col  items-start gap-20"
-					onSubmit={handleSubmit(onSubmit)}
+					onSubmit={handleSubmit(onSubmit as any)}
 				>
 					<div className="h-full w-1/2 flex flex-col items-start">
 						<h4 className="text-xl w-full align-left">Issuer/DAO</h4>

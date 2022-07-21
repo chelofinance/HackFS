@@ -1,9 +1,9 @@
 import {task} from "hardhat/config";
 import type {TaskArguments} from "hardhat/types";
 
-import {attach} from "@utils/contracts";
-import {loadJsonFile} from "@utils/index";
-import {InvoiceFactory} from "@sctypes/contracts";
+import {attach} from "../../utils/contracts";
+import {loadJsonFile} from "../../utils/index";
+import {InvoiceFactory} from "../../sctypes/contracts";
 
 task("create:invoice")
   .addParam("client", "Client/Receiver address")

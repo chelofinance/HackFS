@@ -1,4 +1,5 @@
 {
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "declaration": true,
@@ -35,7 +36,8 @@
     "node_modules"
   ],
   "files": [
-    "./hardhat.config.ts"
+    "./hardhat.config.ts",
+    "./utils/contracts/index.ts"
   ],
   "include": [
     "utils/**/*",

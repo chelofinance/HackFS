@@ -1,9 +1,10 @@
 import {evmcl} from "@1hive/evmcrispr";
 import Web3 from "web3";
-import {ensResolve} from "@aragon/wrapper";
 
 import {getNetworkConfig} from "@helpers/network";
 import {getProvider} from "@helpers/index";
+
+const {ensResolve} = require("@aragon/wrapper");
 
 export const execByDao = async (args: {
   dao: string;
@@ -53,7 +54,7 @@ const getOrgQuery = `query Organizations($id: ID!) {
 
 export const getAragonDAO = async (orgAddress: string): Promise<Organization | null> => {
   const {connectGraphEndpoint} = getNetworkConfig("rinkeby");
-  const data = await fetch(connectGraphEndpoint, {
+  const data = await fetch(connectGraphEndpoint || "", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -75,7 +76,7 @@ export const getAragonDAO = async (orgAddress: string): Promise<Organization | n
 export const getDaoAddress = async (daoName: string): Promise<string> => {
   const {addresses} = getNetworkConfig("rinkeby");
   return await resolveEnsDomain(`${daoName}.aragonid.eth`, {
-    provider: new Web3(process.env.NEXT_PUBLIC_RINKEBY_PROVIDER).currentProvider,
+    provider: new Web3(process.env.NEXT_PUBLIC_RINKEBY_PROVIDER || "").currentProvider,
     registryAddress: addresses.ensRegistry,
   });
 };

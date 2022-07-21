@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import {Signer, BigNumberish} from "ethers";
-import {MockERC20} from "@sctypes/index";
+import {MockERC20} from "../../sctypes/index";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 

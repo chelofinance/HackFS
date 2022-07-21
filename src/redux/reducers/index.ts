@@ -1,7 +1,7 @@
 import {createReducer} from "@reduxjs/toolkit";
 import * as actions from "../actions";
 
-interface InitialState {
+export interface InitialState {
     user: {
         address: string;
     };

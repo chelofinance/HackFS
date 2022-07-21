@@ -1,7 +1,7 @@
 import {HardhatRuntimeEnvironment} from "hardhat/types";
 
-import {Factoring, Invoice, InvoiceFactory, MockERC20} from "@sctypes/index";
-import {deploy} from "@utils/contracts";
+import {Factoring, Invoice, InvoiceFactory, MockERC20} from "../../sctypes/index";
+import {deploy} from "../../utils/contracts";
 
 export const deployProtocol = async (hre: HardhatRuntimeEnvironment, log?: boolean) => {
   const accounts = await hre.ethers.getSigners();

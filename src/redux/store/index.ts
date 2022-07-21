@@ -1,8 +1,13 @@
-import {configureStore} from "@reduxjs/toolkit";
+import {ThunkMiddleware} from ".pnpm/redux-thunk@2.4.1_redux@4.2.0/node_modules/redux-thunk";
+import {AnyAction, configureStore, EnhancedStore} from "@reduxjs/toolkit";
 import {TypedUseSelectorHook, useDispatch, useSelector} from "react-redux";
-import {daoReducer} from "../reducers";
+import {daoReducer, InitialState} from "../reducers";
 
-export const store = configureStore({
+export const store: EnhancedStore<
+  InitialState,
+  AnyAction,
+  [ThunkMiddleware<InitialState, AnyAction, undefined>]
+> = configureStore({
   reducer: daoReducer,
 });
 

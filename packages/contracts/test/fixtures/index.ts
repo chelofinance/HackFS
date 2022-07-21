@@ -1,8 +1,8 @@
 import hre from "hardhat";
-import {Factoring, Invoice, InvoiceFactory, MockERC20} from "@sctypes/index";
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
 
-import {deployProtocol} from "@utils/protocol";
+import {Factoring, Invoice, InvoiceFactory, MockERC20} from "../../sctypes/index";
+import {deployProtocol} from "../../utils/protocol";
 
 interface InvoiceFactoryFixture {
   factoring: Factoring;

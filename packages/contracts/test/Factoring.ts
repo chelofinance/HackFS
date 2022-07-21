@@ -1,9 +1,10 @@
 import {expect} from "chai";
 import {waffle, ethers} from "hardhat";
-import {invoiceFactoryFixture, invoiceFactoryWithInvoiceFixture} from "./fixtures";
-import {mint, approve} from "@utils/erc20";
 import {SignerWithAddress} from "@nomiclabs/hardhat-ethers/signers";
-import {Factoring, Invoice, MockERC20} from "@sctypes/index";
+
+import {mint, approve} from "../utils/erc20";
+import {invoiceFactoryFixture, invoiceFactoryWithInvoiceFixture} from "./fixtures";
+import {Factoring, Invoice, MockERC20} from "../sctypes/index";
 
 const {loadFixture} = waffle;
 

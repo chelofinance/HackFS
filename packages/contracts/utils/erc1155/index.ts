@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import {Signer, BigNumber} from "ethers";
-import {MockERC1155} from "@sctypes/index";
+import {MockERC1155} from "../../sctypes/index";
 
 export const ZERO_ADDRESS = "0x0000000000000000000000000000000000000000";
 
