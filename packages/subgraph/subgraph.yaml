@@ -4,7 +4,7 @@ schema:
 dataSources:
   - kind: ethereum/contract
     name: Invoice
-    network: polygon
+    network: matic
     source:
       address: "0xF4a0A5FdBBB7E87bF69E07774c7B03f99Bd7585b"
       abi: IERC1155
@@ -30,7 +30,7 @@ dataSources:
       file: ../../node_modules/.pnpm/@openzeppelin+subgraphs@0.1.8-5/node_modules/@openzeppelin/subgraphs/src/datasources/erc1155.ts
   - kind: ethereum/contract
     name: Factoring
-    network: polygon
+    network: matic
     source:
       address: "0xf3c4edF3CFEf47897277e5e1bF82ED9ad6C1F7dD"
       abi: Factoring
@@ -52,7 +52,7 @@ dataSources:
       file: ./src/factoring.ts
   - kind: ethereum/contract
     name: InvoiceFactory
-    network: polygon
+    network: matic
     source:
       address: "0x282eDfcA86Ed4500A7fA0Fad44a81d20eBa5a4fE"
       abi: InvoiceFactory
@@ -66,6 +66,8 @@ dataSources:
       abis:
         - name: InvoiceFactory
           file: ./abis/InvoiceFactory.json
+        - name: Factoring
+          file: ./abis/Factoring.json
       eventHandlers:
         - event: InvoiceCreated(uint256)
           handler: handleInvoiceCreated

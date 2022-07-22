@@ -12,7 +12,7 @@ export function handleInvoiceCreated(event: InvoiceCreated): void {
 		const factoring = Factoring.bind(invoiceFactory.try_factoring().value);
 		const invoiceData = factoring.try_invoices(tokenId).value;
 
-		invoice = new Invoice(event.transaction.from.toHex());
+		invoice = new Invoice("invoice/".concat(tokenId.toString()));
 		invoice.status = invoiceData.value0;
 		invoice.repaymentAmount = invoiceData.value1;
 		invoice.fractionalPrice = invoiceData.value2;

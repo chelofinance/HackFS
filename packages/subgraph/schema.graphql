@@ -84,7 +84,7 @@ type Invoice @entity {
 	purchases: [Purchase!]! @derivedFrom(field: "invoice")
 }
 
-type Purchase implements Event @entity(immutable: true) {
+type Purchase implements Event @entity {
 	id: ID!
 	invoice: Invoice!
 	amount: BigInt!
