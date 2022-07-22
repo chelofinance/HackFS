@@ -5,6 +5,7 @@ import Card from "@components/common/card";
 import Table from "@components/common/table";
 import Chart from "@components/common/chart";
 import {useAppSelector} from "@redux/store";
+import {formatValueWithDecimals} from "@helpers/erc";
 
 const INVOICE_HEADERS = [
   {title: "#", value: "id"},
@@ -29,14 +30,29 @@ const App: React.FunctionComponent<{}> = () => {
       id: i + 1,
       rawId: inv.id,
       totalSupply: inv.totalSupply,
-      fractionalPrice: inv.fractionalPrice.slice(0, -18),
+      repaymentAmount: formatValueWithDecimals({
+        value: inv.repaymentAmount,
+        maxDecimals: 2,
+        decimals: 6,
+      }),
+      fractionalPrice: formatValueWithDecimals({
+        value: inv.fractionalPrice,
+        maxDecimals: 2,
+        decimals: 6,
+      }),
       issuer: parseAddress(inv.issuer),
       receiver: parseAddress(inv.receiver),
       status: inv.status === 0 ? "Created" : inv.status === 1 ? "Active" : "Finished",
       rawStatus: inv.status,
-      amountRepaid: inv.amountRepaid.slice(0, -18) || "0",
+      amountRepaid: formatValueWithDecimals({
+        value: inv.amountRepaid,
+        maxDecimals: 2,
+        decimals: 6,
+      }),
       date: new Date(inv.date).toLocaleString().split(",")[0],
-      discount: `${inv.discount[0]}%`,
+      rawDate: inv.date,
+      discount: `${inv.discount}%`,
+      rawDiscount: Number(inv.discount),
       token: inv.token.symbol,
     }));
   }, [invoices]);
@@ -49,18 +65,18 @@ const App: React.FunctionComponent<{}> = () => {
           <Card className="w-1/2 h-80">
             <h3 className="text-xl font-thin">Invoices by volume</h3>
             <Chart
-              data={invoices.map(({date, repaymentAmount}) => ({
-                xAxis: new Date(date).toLocaleString().split(",")[0],
-                yAxis: Number(repaymentAmount.slice(0, -18)),
+              data={viewData.map(({rawDate, repaymentAmount}) => ({
+                xAxis: new Date(rawDate).toLocaleString().split(",")[0],
+                yAxis: Number(repaymentAmount),
               }))}
             />
           </Card>
           <Card className="w-1/2 h-80">
             <h3 className="text-xl font-thin">Repayments</h3>
             <Chart
-              data={invoices.map(({date, amountRepaid}) => ({
-                xAxis: new Date(date).toLocaleString().split(",")[0],
-                yAxis: Number(amountRepaid.slice(0, -18)),
+              data={viewData.map(({rawDate, amountRepaid}) => ({
+                xAxis: new Date(rawDate).toLocaleString().split(",")[0],
+                yAxis: Number(amountRepaid),
               }))}
             />
           </Card>
@@ -81,7 +97,11 @@ const App: React.FunctionComponent<{}> = () => {
               })
             }
             custom={{
-              discount: (inv: any) => <span className="text-green-400">{inv.discount}</span>,
+              discount: ({discount, rawDiscount}: any) => (
+                <span className={`text-${rawDiscount < 0 ? "red-500" : "green-400"}`}>
+                  {discount}
+                </span>
+              ),
               status: ({rawStatus, status}: any) => (
                 <span
                   className={`text-${rawStatus === 0 ? "blue-400" : rawStatus === 1 ? "green-400" : "red-500"

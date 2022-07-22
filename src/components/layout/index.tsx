@@ -7,11 +7,10 @@ import {onGetInvoices} from "@redux/actions";
 import {useAppSelector, useAppDispatch} from "@redux/store";
 
 const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}) => {
-  const [loadApp, setLoadApp] = React.useState(false);
   const {data: invoices, loaded} = useAppSelector((state) => state.invoices);
   const {pathname} = useRouter();
   const dispatch = useAppDispatch();
-  const onApp = pathname.indexOf("app") > -1 && loadApp;
+  const onApp = pathname.indexOf("app") > -1;
   const loading = onApp && !loaded;
 
   const handleNetworkChange = async () => {
@@ -29,7 +28,6 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
         });
       else console.log({err});
     }
-    setLoadApp(true);
   };
 
   React.useEffect(() => {

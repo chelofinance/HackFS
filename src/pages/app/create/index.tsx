@@ -8,7 +8,7 @@ import {Toggle} from "@components/common/form/toggle";
 import {Button} from "@components/common/button";
 import {SelectInputForm} from "@components/common/form/select/select";
 import {uploadDirectory} from "@helpers/storage/ipfs";
-import {getTokensList} from "@helpers/erc";
+import {addDecimals, getTokensList, loadERC20} from "@helpers/erc";
 
 import {getInvoiceJson} from "@helpers/xml";
 import {createInvoice} from "@helpers/factoring";
@@ -41,8 +41,8 @@ const Create: React.FunctionComponent<{}> = () => {
 				dao: args.issuer_contact,
 				client: args.receiver_wallet,
 				fractions: args.fractions,
-				fractionalPrice: args.fractionalPrice,
-				repaymentAmount: args.repaymentAmount,
+				fractionalPrice: await addDecimals(args.token, args.fractionalPrice),
+				repaymentAmount: await addDecimals(args.token, args.repaymentAmount),
 				invoiceURI: args.cid,
 				token: args.token,
 			});
@@ -50,8 +50,8 @@ const Create: React.FunctionComponent<{}> = () => {
 			await createInvoice({
 				client: args.receiver_wallet,
 				fractions: args.fractions,
-				fractionalPrice: args.fractionalPrice,
-				repaymentAmount: args.repaymentAmount,
+				fractionalPrice: await addDecimals(args.token, args.fractionalPrice),
+				repaymentAmount: await addDecimals(args.token, args.repaymentAmount),
 				invoiceURI: args.cid,
 				token: args.token,
 			});

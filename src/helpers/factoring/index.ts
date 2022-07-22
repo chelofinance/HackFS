@@ -1,12 +1,16 @@
 import {BigNumberish} from "@ethersproject/bignumber";
-import {ethers} from "ethers";
 
 import {execByDao} from "@helpers/aragon";
 import {attach} from "@helpers/contracts";
 import {getProvider} from "@helpers/index";
 import addresses from "@factoring/contracts/addresses";
 import {loadERC20} from "@helpers/erc";
-import {Factoring, InvoiceFactory, Invoice as InvoiceContract} from "@factoring/sctypes";
+import {
+  Factoring,
+  InvoiceFactory,
+  Invoice as InvoiceContract,
+  MockERC20,
+} from "@factoring/sctypes";
 
 export const getInvoices = async (): Promise<Invoice[]> => {
   const url = process.env.NEXT_PUBLIC_POLYGON_PROVIDER;
@@ -19,7 +23,7 @@ export const getInvoices = async (): Promise<Invoice[]> => {
 
   const idCount = await invoiceFactory.idCount();
   const invoiceData = await Promise.all(
-    new Array(idCount).fill(0 as any).map((id) => factoring.invoices(id))
+    new Array(idCount.toNumber()).fill(0 as any).map((id, i) => factoring.invoices(i))
   );
   const invoiceURIs = await Promise.all(invoiceData.map((a, id) => invoice.uri(id)));
   const totalSupplies = await Promise.all(invoiceData.map((a, id) => invoice.totalSupply(id)));
@@ -69,7 +73,6 @@ export const createInvoice = async (args: {
     });
 
   const invoiceFactory = <InvoiceFactory>attach("InvoiceFactory", addresses.polygon.invoiceFactory);
-  console.log(args, invoiceFactory.address);
   return await invoiceFactory.createInvoice(
     client,
     fractions,
@@ -78,4 +81,26 @@ export const createInvoice = async (args: {
     invoiceURI,
     addresses.polygon.token //our mock token
   );
+};
+
+export const buyInvoices = async ({
+  invoiceId,
+  fractions,
+  price,
+}: {
+  invoiceId: string;
+  fractions: string;
+  price: string;
+}) => {
+  const token = <MockERC20>attach("ERC20", addresses.polygon.token);
+  const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring);
+
+  await token.approve(factoring.address, price);
+  return await factoring.buyInvoice(invoiceId, fractions);
+};
+
+export const approveInvoice = async ({invoiceId}: {invoiceId: string}) => {
+  const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring);
+
+  return await factoring.approveInvoice(invoiceId);
 };
