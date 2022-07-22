@@ -1,0 +1,13 @@
+{
+  "output": "",
+  "chain": "polygon",
+  "datasources": [
+    {
+      "address": "0xF4a0A5FdBBB7E87bF69E07774c7B03f99Bd7585b",
+      "startBlock": 30952634,
+      "module": [
+        "erc1155"
+      ]
+    }
+  ]
+}

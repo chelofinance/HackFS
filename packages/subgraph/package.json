@@ -1,0 +1,21 @@
+{
+  "name": "@factoring/subgraph",
+  "license": "UNLICENSED",
+  "scripts": {
+    "codegen": "graph codegen",
+    "build": "graph build",
+    "prepare": "codegen && build",
+    "generate": "graph-compiler --config config/polygon.json --include node_modules/@openzeppelin/subgraphs/src/datasources --export-schema . --export-subgraph",
+    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ Rcontre360/factoring_subgraph",
+    "create-local": "graph create --node http://localhost:8020/ factoringsubgraph",
+    "remove-local": "graph remove --node http://localhost:8020/ factoringsubgraph",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 factoringsubgraph"
+  },
+  "dependencies": {
+    "@amxx/graphprotocol-utils": "^1.1.0",
+    "@graphprotocol/graph-cli": "0.30.3",
+    "@graphprotocol/graph-ts": "0.27.0",
+    "@openzeppelin/contracts": "^4.7.0",
+    "@openzeppelin/subgraphs": "^0.1.8-5"
+  }
+}
