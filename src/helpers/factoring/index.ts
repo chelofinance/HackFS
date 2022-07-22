@@ -40,6 +40,7 @@ export const getInvoices = async (): Promise<Invoice[]> => {
     receiver: data.receiver,
     status: data.status as 0 | 1 | 2,
     date: blocks[i].timestamp * 10000,
+    blockNumber: blocks[i].number,
     fractionalPrice: data.fractionalPrice.toString(),
     amountRepaid: data.amountRepaid.toString(),
     repaymentAmount: data.repaymentAmount.toString(),

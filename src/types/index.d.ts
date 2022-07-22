@@ -17,6 +17,7 @@ interface Invoice {
   amountRepaid: string;
   repaymentAmount: string;
   discount: string;
+  blockNumber: number;
   token: {
     address: string;
     decimals: number;
