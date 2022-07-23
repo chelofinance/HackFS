@@ -18,11 +18,14 @@ export const SelectInputForm: React.FC<InputProps & React.InputHTMLAttributes<HT
     onChangeCustom,
     labelVisible,
   }) => {
-    //   const registerAux = register(name, rules);
+    const registerAux = register(name, rules);
     const [showLabel, setShowLabel] = React.useState(false);
     return (
       <>
         <div className="relative flex flex-col py-2 w-full">
+          <Typography type="label" className={clsx("text-white", {"text-status-error": error})}>
+            {title}
+          </Typography>
           <select
             name={name}
             className={clsx(
@@ -31,12 +34,12 @@ export const SelectInputForm: React.FC<InputProps & React.InputHTMLAttributes<HT
                   error,
               },
               "disabled:placeholder-color1 disabled:cursor-not-allowed disabled:text-color1",
-              "block w-full bg-transparent pb-4 pt-4 pl-3 pr-10 text-base text-color1 font-montserrat border f-17 border-gray-500 w-full",
+              "block w-full bg-transparent mt-2 pb-3 pt-3 pl-3 pr-10 text-base text-color1 font-montserrat border f-17 border-gray-500 w-full",
               "focus:outline-none focus:ring-transparent rounded-md"
             )}
-            //   ref={registerAux && registerAux.ref}
+            ref={registerAux && registerAux.ref}
             onChange={(e: any) => {
-              // registerAux && registerAux.onChange(e); // method from hook form register
+              registerAux && registerAux.onChange(e); // method from hook form register
               onChangeCustom && onChangeCustom(e); // your method
               e.target.value === "" ? setShowLabel(false) : setShowLabel(true);
             }}

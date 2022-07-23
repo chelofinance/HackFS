@@ -18,6 +18,7 @@ export interface ChartProps {
 
 const Chart: React.FunctionComponent<ChartProps> = ({data, chartOption}) => {
   const isMobile = false;
+  console.log({data});
   return (
     <div className="pt-2 ml-2 w-full h-full">
       <ResponsiveContainer width="100%" height="100%">

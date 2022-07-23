@@ -1,39 +1,19 @@
 import React from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import type { NextPage } from "next";
-import { uploadDirectory } from "@helpers/storage/ipfs";
-import Card from "@components/common/card";
+import type {NextPage} from "next";
 import clsx from "clsx";
-import { useToasts } from "react-toast-notifications";
-import { useForm } from "react-hook-form";
-import { Input } from "@components/common/form/input";
-import { Button } from "@components/common/button";
+import {useForm} from "react-hook-form";
+import {Input} from "@components/common/form/input";
+import {Button} from "@components/common/button";
 
 const ContactUs: NextPage = () => {
-  const handleFiles = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files: (File | Object)[] = Array.from(event.target.files || []);
-    const uploadContent = files.concat([
-      { mynewObject: "is awesome", isAwesome: true },
-    ]);
-
-    if (files.length <= 0) return;
-
-    try {
-      await uploadDirectory(uploadContent);
-    } catch (err: any) {
-      console.log({ err });
-    }
-  };
-
   // const { addToast } = useToasts();
   const {
     register,
     handleSubmit,
-    setValue,
-    reset,
-    formState: { errors },
-  } = useForm({ mode: "onChange" });
+    formState: {errors},
+  } = useForm({mode: "onChange"});
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
   const onSubmit = async (data: any) => {
@@ -42,19 +22,19 @@ const ContactUs: NextPage = () => {
 
   const rules = {
     fullName: {
-      required: { value: true, message: "This is required" },
+      required: {value: true, message: "This is required"},
     },
     lastname: {
-      required: { value: true, message: "This is required" },
+      required: {value: true, message: "This is required"},
     },
     email: {
-      required: { value: true, message: "This is required" },
+      required: {value: true, message: "This is required"},
     },
     phoneNumber: {
-      required: { value: true, message: "This is required" },
+      required: {value: true, message: "This is required"},
     },
     message: {
-      required: { value: true, message: "This is required" },
+      required: {value: true, message: "This is required"},
     },
   };
 
@@ -78,7 +58,7 @@ const ContactUs: NextPage = () => {
         </div>
         <div
           className={clsx(
-            "flex flex-col items-center justify-center w-full h-full sm:px-10 px-4 pb-10",
+            "flex flex-col items-center justify-center w-full h-full sm:px-10 px-4 pb-10"
           )}
         >
           <form

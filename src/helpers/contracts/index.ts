@@ -3,7 +3,7 @@ import {ContractReceipt} from "@ethersproject/contracts";
 import {LogDescription} from "@ethersproject/abi";
 
 import {getProvider} from "@helpers/index";
-import abis from "./Abis";
+import abis from "./abis";
 
 export function attach(contractName: keyof typeof abis, address: string, customProvider?: string) {
   const provider = getProvider(customProvider);

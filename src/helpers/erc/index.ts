@@ -3,6 +3,8 @@ import {ethers} from "ethers";
 
 import {attach} from "@helpers/contracts";
 
+type ERC20 = any;
+
 export const approveERC1155 = async (args: {
   contract: string;
   amount: string;
@@ -65,13 +67,16 @@ export const getTokensList = async () => {
 };
 
 export const loadERC20 = async (token: string) => {
-  const tokenContract = attach("ERC20", token);
+  const url = process.env.NEXT_PUBLIC_POLYGON_PROVIDER;
+  console.log("prev");
+  const tokenContract = <ERC20>attach("ERC20", token, url);
   const [symbol, name, totalSupply, decimals] = await Promise.all([
     tokenContract.symbol(),
     tokenContract.name(),
     tokenContract.totalSupply(),
     tokenContract.decimals(),
   ]);
+  console.log("done", {symbol, name, totalSupply, decimals});
 
-  return {symbol, name, totalSupply: totalSupply.toString(), decimals};
+  return {address: token, symbol, name, totalSupply: totalSupply.toString(), decimals};
 };

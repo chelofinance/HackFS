@@ -25,7 +25,7 @@ export const Input: React.FC<InputProps & React.InputHTMLAttributes<HTMLInputEle
   colorErrorHide = false,
   ...props
 }) => {
-  // const registerInput = register(name, rules);
+  const registerInput = register && register(name, rules);
   return (
     <div className={clsx("relative flex flex-col w-full", classNameContainer)}>
       <div className={clsx(styles.input)}>
@@ -35,12 +35,12 @@ export const Input: React.FC<InputProps & React.InputHTMLAttributes<HTMLInputEle
 
         <input
           id={name}
-          // {...registerInput}
+          {...(register ? registerInput : {})}
           onChange={(e) => {
-            // registerInput.onChange(e);
+            register && registerInput.onChange(e);
             onChangeCustom && onChangeCustom(e);
           }}
-          // onBlur={registerInput.onBlur}
+          onBlur={register && registerInput.onBlur}
           placeholder={customPlaceholder}
           autoComplete="off"
           className={clsx(
@@ -89,7 +89,7 @@ export const Input: React.FC<InputProps & React.InputHTMLAttributes<HTMLInputEle
           </div>
         )}
         {rightImg && (
-          <div onClick={rightClick} className="absolute right-4 top-12 w-4 h-3">
+          <div onClick={rightClick} className="absolute right-48 top-4 w-4 h-3">
             {rightImg}
           </div>
         )}

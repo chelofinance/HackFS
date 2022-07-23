@@ -2,24 +2,10 @@ import React from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import type {NextPage} from "next";
-import {uploadDirectory} from "@helpers/storage/ipfs";
-import Card from "@components/common/card";
 import clsx from "clsx";
+import Card2 from "@components/common/card/card2";
 
 const Info: NextPage = () => {
-  const handleFiles = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const files: (File | Object)[] = Array.from(event.target.files || []);
-    const uploadContent = files.concat([{mynewObject: "is awesome", isAwesome: true}]);
-
-    if (files.length <= 0) return;
-
-    try {
-      await uploadDirectory(uploadContent);
-    } catch (err: any) {
-      console.log({err});
-    }
-  };
-
   React.useEffect(() => {
     AOS.init();
   }, []);
@@ -74,7 +60,7 @@ const Info: NextPage = () => {
                 data-aos-mirror="true"
                 data-aos-once="false"
               />
-              <Card className="xl:w-1/2 lg:w-2/3 w-full bg-transparent text-white rounded-xl p-10">
+              <Card2 className="xl:w-1/2 lg:w-2/3 w-full bg-transparent text-white rounded-xl p-10">
                 <div
                   className="gap-10 flex flex-col items-center justify-center min-h-[24rem]"
                   data-aos={dataAos}
@@ -100,7 +86,7 @@ const Info: NextPage = () => {
                     {description}
                   </p>
                 </div>
-              </Card>
+              </Card2>
             </div>
           );
         })}

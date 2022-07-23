@@ -17,9 +17,16 @@ interface Invoice {
   amountRepaid: string;
   repaymentAmount: string;
   discount: string;
+  blockNumber: number;
   token: {
     address: string;
     decimals: number;
     symbol: string;
   };
+  purchases: {
+    id: string;
+    amount: string;
+    timestamp: string;
+    buyer: string;
+  }[];
 }

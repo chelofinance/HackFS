@@ -8,9 +8,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "workspaces": [
-    "packages/contracts",
-    "src"
-  ]
+  "license": "ISC"
 }

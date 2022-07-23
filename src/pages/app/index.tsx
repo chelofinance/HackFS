@@ -1,10 +1,11 @@
 import React from "react";
-import {ethers} from "ethers";
+import {useRouter} from "next/router";
 
 import Card from "@components/common/card";
 import Table from "@components/common/table";
 import Chart from "@components/common/chart";
 import {useAppSelector} from "@redux/store";
+import {formatValueWithDecimals} from "@helpers/erc";
 
 const INVOICE_HEADERS = [
   {title: "#", value: "id"},
@@ -20,37 +21,62 @@ const INVOICE_HEADERS = [
 ];
 
 const App: React.FunctionComponent<{}> = () => {
+  const router = useRouter();
   const {data: invoices} = useAppSelector((state) => state.invoices);
   const viewData = React.useMemo(() => {
     const parseAddress = (add: string) => `${add.slice(0, 5)}...${add.slice(-5)}`;
 
     return invoices.map((inv, i) => ({
-      id: i,
+      id: i + 1,
+      rawId: inv.id,
       totalSupply: inv.totalSupply,
-      fractionalPrice: inv.fractionalPrice.slice(0, -18),
+      repaymentAmount: formatValueWithDecimals({
+        value: inv.repaymentAmount,
+        maxDecimals: 2,
+        decimals: 6,
+      }),
+      fractionalPrice: formatValueWithDecimals({
+        value: inv.fractionalPrice,
+        maxDecimals: 2,
+        decimals: 6,
+      }),
       issuer: parseAddress(inv.issuer),
       receiver: parseAddress(inv.receiver),
       status: inv.status === 0 ? "Created" : inv.status === 1 ? "Active" : "Finished",
       rawStatus: inv.status,
-      amountRepaid: inv.amountRepaid.slice(0, -18) || "0",
+      amountRepaid: formatValueWithDecimals({
+        value: inv.amountRepaid,
+        maxDecimals: 2,
+        decimals: 6,
+      }),
       date: new Date(inv.date).toLocaleString().split(",")[0],
-      discount: `${inv.discount[0]}%`,
+      rawDate: inv.date,
+      discount: `${inv.discount}%`,
+      rawDiscount: Number(inv.discount),
       token: inv.token.symbol,
     }));
   }, [invoices]);
-  console.log({viewData});
 
   return (
     <div className="h-full flex flex-col items-center py-28">
       <div className="w-3/4 h-full">
         <h2 className="text-2xl text-gray-300 mb-5">Overview</h2>
-        <div className="flex justify-center mb-20 w-full">
-          <Card className="w-2/3 h-80">
+        <div className="flex justify-center mb-20 w-full gap-10">
+          <Card className="w-1/2 h-80">
             <h3 className="text-xl font-thin">Invoices by volume</h3>
             <Chart
-              data={invoices.map(({date, repaymentAmount}) => ({
-                xAxis: new Date(date).toLocaleString().split(",")[0],
-                yAxis: repaymentAmount.slice(0, -18),
+              data={viewData.map(({rawDate, repaymentAmount}) => ({
+                xAxis: new Date(rawDate).toLocaleString().split(",")[0],
+                yAxis: Number(repaymentAmount),
+              }))}
+            />
+          </Card>
+          <Card className="w-1/2 h-80">
+            <h3 className="text-xl font-thin">Repayments</h3>
+            <Chart
+              data={viewData.map(({rawDate, amountRepaid}) => ({
+                xAxis: new Date(rawDate).toLocaleString().split(",")[0],
+                yAxis: Number(amountRepaid),
               }))}
             />
           </Card>
@@ -64,8 +90,18 @@ const App: React.FunctionComponent<{}> = () => {
             classes={{root: "w-full"}}
             data={viewData}
             headers={INVOICE_HEADERS}
+            setSelected={({rawId}: any) =>
+              router.push({
+                pathname: "/app/invoice",
+                query: {id: rawId},
+              })
+            }
             custom={{
-              discount: (inv: any) => <span className="text-green-400">{inv.discount}</span>,
+              discount: ({discount, rawDiscount}: any) => (
+                <span className={`text-${rawDiscount < 0 ? "red-500" : "green-400"}`}>
+                  {discount}
+                </span>
+              ),
               status: ({rawStatus, status}: any) => (
                 <span
                   className={`text-${rawStatus === 0 ? "blue-400" : rawStatus === 1 ? "green-400" : "red-500"

@@ -11,16 +11,25 @@ enum Status {
 
 struct InvoiceMeta {
     Status status;
-    uint256 fractionalPrice;
     uint256 repaymentAmount;
+    uint256 fractionalPrice;
+    uint256 amountRepaid;
+    uint256 blockNumber;
     address issuer;
     address receiver;
     IERC20 token;
 }
 
 interface IFactoring {
+    event BuyInvoice(uint256 invoiceId, uint256 amount, address buyer);
+
+    event RepayInvoice(uint256 invoiceId, uint256 amount, address payer);
+
+    event RewardsWithdrawed(uint256 invoiceID, address user, uint256 balance, uint256 tokenAmount);
+
     function setInvoice(
         uint256 invoiceID,
+        uint256 repaymentAmount,
         uint256 fractionalPrice,
         address issuer,
         address receiver,

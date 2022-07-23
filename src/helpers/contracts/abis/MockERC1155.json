@@ -210,7 +210,7 @@
     "name": "mint",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "functin"
+    "type": "function"
   },
   {
     "inputs": [

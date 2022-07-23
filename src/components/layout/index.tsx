@@ -1,7 +1,7 @@
 import React from "react";
 import {useRouter} from "next/router";
 
-import {switchNetwork, addNetwork} from "@helpers/index";
+import {switchNetwork, addNetwork, connectMetamask} from "@helpers/index";
 import Navbar from "@components/layout/Navbar";
 import {onGetInvoices} from "@redux/actions";
 import {useAppSelector, useAppDispatch} from "@redux/store";
@@ -15,14 +15,15 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
 
   const handleNetworkChange = async () => {
     try {
-      await switchNetwork(4); //rinkeby
+      await connectMetamask();
+      await switchNetwork(137); //rinkeby
     } catch (err: any) {
       if (err.code === 4902)
         await addNetwork({
-          chainId: 4,
-          name: "Rinkeby testnet",
-          currency: {name: "RinkebyETH", decimals: 18, symbol: "rETH"},
-          rpcUrl: "https://rinkeby.infura.io/v3/",
+          chainId: 137,
+          name: "Polygon",
+          currency: {name: "MATIC", decimals: 18, symbol: "rETH"},
+          rpcUrl: "https://polygon-rpc.com/",
         });
       else console.log({err});
     }
@@ -51,16 +52,6 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
           <div className="flex flex-col min-h-screen z-50">{children}</div>
         </div>
       </div>
-      <footer className="flex h-24 w-full items-center justify-center bg-black text-white border-t-2 ">
-        <a
-          className="flex items-center justify-center gap-2"
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by
-        </a>
-      </footer>
     </>
   );
 };

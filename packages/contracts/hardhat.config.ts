@@ -5,6 +5,7 @@ import {config as dotenvConfig} from "dotenv";
 import "hardhat-gas-reporter";
 import {HardhatUserConfig} from "hardhat/config";
 import {resolve} from "path";
+import "tsconfig-paths/register";
 import "solidity-coverage";
 
 import "./tasks/deploy";
@@ -22,6 +23,10 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       accounts: {},
+    },
+    polygon: {
+      url: process.env.POLYGON_PROVIDER,
+      accounts: [process.env.PRIVATE_KEY || ""],
     },
   },
   paths: {

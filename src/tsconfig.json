@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": ".",
+    "outDir": "lib",
     "target": "es5",
     "lib": [
       "dom",
@@ -26,9 +27,6 @@
       "@components/*": [
         "components/*"
       ],
-      "@factoring/*": [
-        "../packages/contracts/*"
-      ],
       "@helpers/*": [
         "helpers/*"
       ]
@@ -37,7 +35,6 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "../packages/contracts/**/*.ts",
     "**/*.tsx"
   ],
   "exclude": [
