@@ -1,5 +1,8 @@
 import React from "react";
+import {ethers} from "ethers";
 import clsx from "clsx";
+
+import {AddressComponent} from "@components/common/address";
 
 interface DataTableProps {
   data: Record<string, unknown>[];
@@ -16,10 +19,13 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
     setSelected && setSelected(row);
   };
 
+  const renderIfAddress = (value: string) =>
+    ethers.utils.isAddress(value) ? <AddressComponent address={value} /> : value;
+
   const renderCustom = (head: {value: string}, args: any) =>
     custom && typeof custom[head.value] === "function"
       ? custom[head.value](args)
-      : args[head.value];
+      : renderIfAddress(args[head.value]);
 
   return (
     <>
@@ -29,7 +35,7 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
             <tr className="flex w-full mb-4">
               {headers.map((head: any, idx: number) => {
                 return (
-                  <th key={idx} className="p-4 w-1/4 text-center">
+                  <th key={idx} className="p-4 text-start flex-1">
                     {head.title}
                   </th>
                 );
@@ -48,7 +54,7 @@ const DataTable: React.FunctionComponent<DataTableProps> = (props) => {
               >
                 {headers.map((head: any, index: number) => (
                   <td
-                    className="p-4 w-1/4"
+                    className="p-4 flex-1"
                     key={index}
                     onClick={() => head.onClick && head.onClick(row)}
                   >

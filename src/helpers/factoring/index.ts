@@ -1,3 +1,5 @@
+import axios from "axios";
+import {ethers} from "ethers";
 import {BigNumberish} from "@ethersproject/bignumber";
 
 import {execByDao} from "@helpers/aragon";
@@ -12,43 +14,99 @@ import {
   MockERC20,
 } from "@factoring/sctypes";
 
+const toBN = ethers.BigNumber.from;
+
+type InvoicesQuery = {
+  id: string;
+  status: number;
+  repaymentAmount: string;
+  fractionalPrice: string;
+  amountRepaid: string;
+  blockNumber: string;
+  issuer: string;
+  receiver: string;
+  token: string;
+  purchases: {
+    id: string;
+    amount: string;
+    buyer: string;
+    timestamp: string;
+  }[];
+};
+
+const GET_INVOICES_QUERY = `{
+  invoices{
+    id 
+    status
+    repaymentAmount 
+    fractionalPrice 
+    amountRepaid 
+    blockNumber 
+    issuer 
+    receiver 
+    token 
+    purchases {
+      id 
+      amount 
+      buyer  
+      timestamp
+    }
+  }
+}`;
+
 export const getInvoices = async (): Promise<Invoice[]> => {
-  const url = process.env.NEXT_PUBLIC_POLYGON_PROVIDER;
-  const invoiceFactory = <InvoiceFactory>(
-    attach("InvoiceFactory", addresses.polygon.invoiceFactory, url)
-  );
-  const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring, url);
-  const invoice = <InvoiceContract>attach("Invoice", addresses.polygon.invoice, url);
-  const provider = getProvider(url);
+  const url = process.env.NEXT_PUBLIC_SUBGRAPH_URL;
+  const jsonRpc = process.env.NEXT_PUBLIC_POLYGON_PROVIDER;
+  const provider = getProvider(jsonRpc);
+  const data = await fetch(url || "", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+    body: JSON.stringify({
+      query: GET_INVOICES_QUERY,
+    }),
+  });
 
-  const idCount = await invoiceFactory.idCount();
-  const invoiceData = await Promise.all(
-    new Array(idCount.toNumber()).fill(0 as any).map((id, i) => factoring.invoices(i))
-  );
-  const invoiceURIs = await Promise.all(invoiceData.map((a, id) => invoice.uri(id)));
-  const totalSupplies = await Promise.all(invoiceData.map((a, id) => invoice.totalSupply(id)));
-  const blocks = await Promise.all(
-    invoiceData.map(({blockNumber}) => provider.getBlock(blockNumber.toNumber()))
-  );
-  const tokens = await Promise.all(invoiceData.map(({token}) => loadERC20(token)));
+  if (data.ok) {
+    const json = await data.json();
+    const invoices: InvoicesQuery[] = json.data.invoices;
+    const invoice = <InvoiceContract>attach("Invoice", addresses.polygon.invoice, jsonRpc);
+    const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring, jsonRpc);
 
-  return invoiceData.map((data, i) => ({
-    id: i.toString(),
-    uri: invoiceURIs[i],
-    totalSupply: totalSupplies[i].toString(),
-    issuer: data.issuer,
-    receiver: data.receiver,
-    status: data.status as 0 | 1 | 2,
-    date: blocks[i].timestamp * 10000,
-    blockNumber: blocks[i].number,
-    fractionalPrice: data.fractionalPrice.toString(),
-    amountRepaid: data.amountRepaid.toString(),
-    repaymentAmount: data.repaymentAmount.toString(),
-    discount: String(
-      100 - data.repaymentAmount.mul(100).div(data.fractionalPrice.mul(totalSupplies[i])).toNumber()
-    ),
-    token: tokens[i],
-  }));
+    const tokens = await Promise.all(invoices.map(({token}) => loadERC20(token)));
+    const totalSupplies = await Promise.all(invoices.map((a, id) => invoice.totalSupply(id)));
+    const blocks = await Promise.all(
+      invoices.map(({blockNumber}) => provider.getBlock(Number(blockNumber)))
+    );
+    const invoiceURIs = await Promise.all(invoices.map((a, id) => invoice.uri(id)));
+    const allStatus = await Promise.all(invoices.map((inv, i) => factoring.invoices(i)));
+
+    return invoices.map((data, i) => ({
+      id: i.toString(),
+      uri: invoiceURIs[i],
+      totalSupply: totalSupplies[i].toString(),
+      issuer: data.issuer,
+      receiver: data.receiver,
+      status: allStatus[i].status as Invoice["status"],
+      date: blocks[i].timestamp * 10000,
+      blockNumber: blocks[i].number,
+      fractionalPrice: data.fractionalPrice.toString(),
+      amountRepaid: data.amountRepaid.toString(),
+      repaymentAmount: data.repaymentAmount.toString(),
+      discount: String(
+        100 -
+        toBN(data.repaymentAmount)
+          .mul(100)
+          .div(toBN(data.fractionalPrice).mul(totalSupplies[i]))
+          .toNumber()
+      ),
+      token: tokens[i],
+      purchases: data.purchases,
+    }));
+  }
+  return [];
 };
 
 export const createInvoice = async (args: {

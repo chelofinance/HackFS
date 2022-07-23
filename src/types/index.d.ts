@@ -23,4 +23,10 @@ interface Invoice {
     decimals: number;
     symbol: string;
   };
+  purchases: {
+    id: string;
+    amount: string;
+    timestamp: string;
+    buyer: string;
+  }[];
 }

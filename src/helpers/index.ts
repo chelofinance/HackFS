@@ -49,3 +49,5 @@ export const addNetwork = async ({
     ],
   });
 };
+
+export const toBN = ethers.BigNumber.from;

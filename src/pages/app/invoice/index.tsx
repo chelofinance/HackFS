@@ -11,6 +11,7 @@ import {Button} from "@components/common/button";
 
 import {approveInvoice, buyInvoices} from "@helpers/factoring";
 import {formatValueWithDecimals} from "@helpers/erc";
+import {toBN} from "@helpers/index";
 
 const InvoiceDetail: React.FunctionComponent<{}> = () => {
   const [{buy}, setModal] = React.useState({buy: false});
@@ -86,9 +87,9 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
             </div>
             <div className="h-5/6 pt-1">
               <Chart
-                data={invoices.map(({date, amountRepaid}) => ({
-                  xAxis: new Date(date).toLocaleString().split(",")[0],
-                  yAxis: Number(amountRepaid.slice(0, -18)),
+                data={invoice.purchases.map(({amount, timestamp}) => ({
+                  xAxis: new Date(Number(timestamp) * 1000).toLocaleString().split(",")[0],
+                  yAxis: toBN(amount).mul(invoice.fractionalPrice).toString(),
                 }))}
               />
             </div>
@@ -99,13 +100,19 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
         <h2 className="text-2xl font-thin mb-4">Transactions</h2>
         <DataTable
           headers={[
-            {title: "Total Value", value: "Total Value"},
-            {title: "Token Amount", value: "Token Amount"},
-            {title: "Fractions", value: "Fractions"},
-            {title: "Account", value: "Account"},
-            {title: "Time", value: "Time"},
+            {title: "#", value: "id"},
+            {title: "Token Amount", value: "price"},
+            {title: "Fractions", value: "amount"},
+            {title: "Account", value: "buyer"},
+            {title: "Time", value: "date"},
           ]}
-          data={[]}
+          data={invoice.purchases.map((a, id) => ({
+            id: id + 1,
+            amount: a.amount,
+            buyer: a.buyer,
+            price: toBN(invoice.fractionalPrice).mul(a.amount).toString(),
+            date: "some data",
+          }))}
         />
       </div>
       <div className="w-full h-full px-20 mt-16">

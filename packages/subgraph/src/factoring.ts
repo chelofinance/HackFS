@@ -9,7 +9,7 @@ import {Purchase, Invoice} from "../generated/schema";
 
 export function handleBuyInvoice(event: BuyInvoice): void {
   let invoice = Invoice.load("invoice/".concat(event.params.invoiceId.toString()));
-  const purchase = new Purchase("purchase/".concat(event.transaction.from.toHex()));
+  const purchase = new Purchase("purchase/".concat(transactions.log(event).id));
   purchase.amount = event.params.amount;
   purchase.buyer = event.params.buyer;
   purchase.transaction = transactions.log(event).id;

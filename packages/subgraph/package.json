@@ -6,7 +6,7 @@
     "build": "graph build",
     "prepare": "codegen && build",
     "generate": "graph-compiler --config config/polygon.json --include node_modules/@openzeppelin/subgraphs/src/datasources --export-schema . --export-subgraph",
-    "deploy": "graph deploy --node https://api.studio.thegraph.com/deploy/ Rcontre360/factoring_subgraph"
+    "deploy": "graph deploy --product hosted-service <GITHUB_USER>/<SUBGRAPH NAME>"
   },
   "dependencies": {
     "@amxx/graphprotocol-utils": "^1.1.0",
