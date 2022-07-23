@@ -4,8 +4,16 @@ import {BigNumberish} from "@ethersproject/bignumber";
 import {execByDao} from "@helpers/aragon";
 import {attach} from "@helpers/contracts";
 import {getProvider} from "@helpers/index";
-import addresses from "@factoring/contracts/addresses";
 import {loadERC20} from "@helpers/erc";
+
+const addresses = {
+  polygon: {
+    token: "0xa37eF16a9863326578d765C5CF7828D93eBd21BB",
+    invoice: "0xF4a0A5FdBBB7E87bF69E07774c7B03f99Bd7585b",
+    factoring: "0xf3c4edF3CFEf47897277e5e1bF82ED9ad6C1F7dD",
+    invoiceFactory: "0x282eDfcA86Ed4500A7fA0Fad44a81d20eBa5a4fE",
+  },
+};
 
 type Factoring = any;
 type InvoiceFactory = any;
