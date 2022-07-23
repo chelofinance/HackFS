@@ -12,10 +12,11 @@ import {Button} from "@components/common/button";
 import {approveInvoice, buyInvoices, repayInvoice, withdrawRewards} from "@helpers/factoring";
 import {formatValueWithDecimals} from "@helpers/erc";
 import {toBN} from "@helpers/index";
-import {getFolderList} from "@helpers/storage/ipfs";
+import {cidToHttp, downloadFile, getFolderList} from "@helpers/storage/ipfs";
 
 const InvoiceDetail: React.FunctionComponent<{}> = () => {
   const [{buy, repay}, setModal] = React.useState({buy: false, repay: false});
+  const [downloadFiles, setDownloadFiles] = React.useState<string[]>([]);
   const router = useRouter();
   const {data: invoices} = useAppSelector((state) => state.invoices);
   const {invoice, index} = React.useMemo(() => {
@@ -35,7 +36,10 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
   };
 
   const downloadAttachments = async () => {
-    const folderList = await getFolderList(invoice.uri.split("/").reverse()[0]);
+    const folderList = (await getFolderList(invoice.uri.split("/").reverse()[0])).map(
+      ({cid, name}) => ({url: cidToHttp(cid.toString()), name})
+    );
+    const files = await Promise.all(folderList.map(({url, name}) => downloadFile(url, name)));
   };
 
   const handleWithdrawRewards = async () => {
@@ -52,6 +56,11 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
 
   return (
     <div className="h-full flex flex-col items-center py-28">
+      <div style={{display: "none"}}>
+        {downloadFiles.map((fil) => (
+          <iframe src={fil} />
+        ))}
+      </div>
       <div className="w-full h-full px-20">
         <h2 className="text-4xl font-thin mb-4">Invoice #{index + 1}</h2>
         <div className="flex lg:flex-row flex-col gap-10">
@@ -139,7 +148,7 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
                 className="rounded-md px-4 py-2 bg-gray-800/60 w-1/3 whitespace-nowrap"
                 onClick={downloadAttachments}
               >
-                Invoice Details
+                Download
               </Button>
             </div>
           </div>

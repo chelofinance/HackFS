@@ -1,4 +1,5 @@
 import {NFTStorage, File} from "nft.storage";
+import axios from "axios";
 import {create} from "ipfs-http-client";
 
 export const uploadDirectory = async (
@@ -22,5 +23,25 @@ export const getFolderList = async (ipfsPath: string) => {
   for await (const link of ipfs.ls(ipfsPath)) {
     links.push(link);
   }
-  console.log(links);
+  return links;
+};
+
+export const downloadFile = async (file: string, fileName: string) => {
+  const res = await axios({
+    url: file, //your url
+    method: "GET",
+    responseType: "blob", // important
+  });
+  const url = window.URL.createObjectURL(new Blob([res.data]));
+  const link = document.createElement("a");
+  link.href = url;
+  link.setAttribute("download", fileName); //or any other extension
+  document.body.appendChild(link);
+  link.click();
+
+  return {url, response: res};
+};
+
+export const cidToHttp = (cid: string) => {
+  return `https://ipfs.io/ipfs/${cid}`;
 };
