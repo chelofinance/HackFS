@@ -1,5 +1,4 @@
 {
-  "name": "@factoring/subgraph",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",

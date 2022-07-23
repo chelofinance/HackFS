@@ -11,10 +11,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "workspaces": [
-    "packages/contracts",
-    "packages/subgraph",
-    "src"
-  ]
+  "license": "ISC"
 }
