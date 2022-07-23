@@ -1,0 +1,108 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "contract IFactoring",
+        "name": "_factoring",
+        "type": "address"
+      },
+      {
+        "internalType": "contract IInvoice",
+        "name": "_invoice",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "tokenID",
+        "type": "uint256"
+      }
+    ],
+    "name": "InvoiceCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "client",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fractions",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fractionalPrice",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "repaymentAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "invoiceURI",
+        "type": "string"
+      },
+      {
+        "internalType": "contract IERC20",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "createInvoice",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "factoring",
+    "outputs": [
+      {
+        "internalType": "contract IFactoring",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "idCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "invoice",
+    "outputs": [
+      {
+        "internalType": "contract IInvoice",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

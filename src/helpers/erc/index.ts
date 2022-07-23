@@ -2,7 +2,8 @@ import axios from "axios";
 import {ethers} from "ethers";
 
 import {attach} from "@helpers/contracts";
-import {ERC20} from "@factoring/sctypes";
+
+type ERC20 = any;
 
 export const approveERC1155 = async (args: {
   contract: string;

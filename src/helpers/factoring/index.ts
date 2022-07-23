@@ -1,4 +1,3 @@
-import axios from "axios";
 import {ethers} from "ethers";
 import {BigNumberish} from "@ethersproject/bignumber";
 
@@ -7,12 +6,11 @@ import {attach} from "@helpers/contracts";
 import {getProvider} from "@helpers/index";
 import addresses from "@factoring/contracts/addresses";
 import {loadERC20} from "@helpers/erc";
-import {
-  Factoring,
-  InvoiceFactory,
-  Invoice as InvoiceContract,
-  MockERC20,
-} from "@factoring/sctypes";
+
+type Factoring = any;
+type InvoiceFactory = any;
+type Invoice = any;
+type MockERC20 = any;
 
 const toBN = ethers.BigNumber.from;
 
