@@ -70,7 +70,7 @@ export const getInvoices = async (): Promise<Invoice[]> => {
   if (data.ok) {
     const json = await data.json();
     const invoices: InvoicesQuery[] = json.data.invoices;
-    const invoice = <InvoiceContract>attach("Invoice", addresses.polygon.invoice, jsonRpc);
+    const invoice = <Invoice>attach("Invoice", addresses.polygon.invoice, jsonRpc);
     const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring, jsonRpc);
 
     const tokens = await Promise.all(invoices.map(({token}) => loadERC20(token)));
