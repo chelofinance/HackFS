@@ -197,7 +197,7 @@
     ],
     "name": "mint",
     "outputs": [],
-    "stateMutbility": "nonpayable",
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {

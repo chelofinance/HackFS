@@ -68,6 +68,7 @@ export const getTokensList = async () => {
 
 export const loadERC20 = async (token: string) => {
   const url = process.env.NEXT_PUBLIC_POLYGON_PROVIDER;
+  console.log("prev");
   const tokenContract = <ERC20>attach("ERC20", token, url);
   const [symbol, name, totalSupply, decimals] = await Promise.all([
     tokenContract.symbol(),
@@ -75,6 +76,7 @@ export const loadERC20 = async (token: string) => {
     tokenContract.totalSupply(),
     tokenContract.decimals(),
   ]);
+  console.log("done", {symbol, name, totalSupply, decimals});
 
   return {address: token, symbol, name, totalSupply: totalSupply.toString(), decimals};
 };

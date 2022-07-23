@@ -82,10 +82,13 @@ export const getInvoices = async (): Promise<Invoice[]> => {
     const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring, jsonRpc);
 
     const tokens = await Promise.all(invoices.map(({token}) => loadERC20(token)));
+    console.log("supplies");
     const totalSupplies = await Promise.all(invoices.map((a, id) => invoice.totalSupply(id)));
+    console.log("blocks");
     const blocks = await Promise.all(
       invoices.map(({blockNumber}) => provider.getBlock(Number(blockNumber)))
     );
+    console.log("uris");
     const invoiceURIs = await Promise.all(invoices.map((a, id) => invoice.uri(id)));
     const allStatus = await Promise.all(invoices.map((inv, i) => factoring.invoices(i)));
 
