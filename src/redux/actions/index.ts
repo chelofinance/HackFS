@@ -3,9 +3,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import * as actionTypes from "@redux/constants";
 import {connectMetamask, isWeb3Enabled} from "@helpers/index";
 import {getDaoAddress, getAragonDAO} from "@helpers/aragon";
-import {getBuys, getInvoices} from "@helpers/factoring";
-import {getMockInvoices, timeout} from "@helpers/mocks";
-import {getFolderList} from "@helpers/storage/ipfs";
+import {getInvoices} from "@helpers/factoring";
 
 export const onConnectWallet = createAsyncThunk(actionTypes.CONNECT_WALLET, async () => {
   if (!(await isWeb3Enabled())) return "";
