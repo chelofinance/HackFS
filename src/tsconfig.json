@@ -1,5 +1,4 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "lib",
@@ -28,9 +27,6 @@
       "@components/*": [
         "components/*"
       ],
-      "@factoring/*": [
-        "../packages/contracts/*"
-      ],
       "@helpers/*": [
         "helpers/*"
       ]
@@ -39,7 +35,6 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "../packages/contracts/**/*.ts",
     "**/*.tsx"
   ],
   "exclude": [
