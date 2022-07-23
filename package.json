@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "install_client": "cd packages/contracts && pnpm install && cd .. && cd .. && cd src && pnpm install",
+    "build": "cd packages/contracts && pnpm run compile && cd .. && cd .. && cd src && pnpm run build",
+    "client": "cd src && pnpm start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

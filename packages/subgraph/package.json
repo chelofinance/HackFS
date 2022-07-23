@@ -4,7 +4,7 @@
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "prepare": "codegen && build",
+    "prepare": "pnpm codegen && pnpm build",
     "generate": "graph-compiler --config config/polygon.json --include node_modules/@openzeppelin/subgraphs/src/datasources --export-schema . --export-subgraph",
     "deploy": "graph deploy --product hosted-service <GITHUB_USER>/<SUBGRAPH NAME>"
   },
