@@ -2,22 +2,6 @@ import React from "react";
 
 import Card from "@components/common/card/card2";
 
-function useOutsideAlerter(ref: React.MutableRefObject<unknown>, click: (ev: MouseEvent) => void) {
-  React.useEffect(() => {
-    // Bind the event listener
-    function handleClickOutside(event: MouseEvent) {
-      if (ref.current && !(ref as any).current.contains(event.target)) {
-        click(event);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      // Unbind the event listener on clean up
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [ref]);
-}
-
 export interface ModalProps {
   open: boolean;
   setModal: Function;
@@ -30,12 +14,19 @@ export const Modal: React.FunctionComponent<React.PropsWithChildren<any>> = ({
 }) => {
   const wrapperRef = React.useRef(null);
 
-  const handleClickOutside = () => {
-    console.log("click outside");
-    open && setModal(false);
-  };
-
-  useOutsideAlerter(wrapperRef, handleClickOutside);
+  React.useEffect(() => {
+    // Bind the event listener
+    const handleClickOutside = (event: MouseEvent) => {
+      if (wrapperRef.current && !(wrapperRef as any).current.contains(event.target)) {
+        setModal(false);
+      }
+    };
+    document.addEventListener("click", handleClickOutside, true);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("click", handleClickOutside, true);
+    };
+  }, [wrapperRef]);
 
   if (!open) return null;
 
@@ -47,7 +38,11 @@ export const Modal: React.FunctionComponent<React.PropsWithChildren<any>> = ({
         aria-modal="true"
         role="dialog"
       >
-        <div className="relative p-4 w-full max-w-2xl h-full md:h-auto" ref={wrapperRef}>
+        <div
+          className="relative p-4 w-full max-w-2xl h-full md:h-auto"
+          ref={wrapperRef}
+          onBlur={() => console.log("wenardo")}
+        >
           <div className="relative  rounded-lg shadow">
             <Card className="flex items-center p-6 space-x-2 rounded-b bg-darkblue rounded-xl p-4">
               {children}

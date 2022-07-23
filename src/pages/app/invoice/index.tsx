@@ -9,12 +9,13 @@ import DataTable from "@components/common/table";
 import Chart from "@components/common/chart";
 import {Button} from "@components/common/button";
 
-import {approveInvoice, buyInvoices} from "@helpers/factoring";
+import {approveInvoice, buyInvoices, repayInvoice, withdrawRewards} from "@helpers/factoring";
 import {formatValueWithDecimals} from "@helpers/erc";
 import {toBN} from "@helpers/index";
+import {getFolderList} from "@helpers/storage/ipfs";
 
 const InvoiceDetail: React.FunctionComponent<{}> = () => {
-  const [{buy}, setModal] = React.useState({buy: false});
+  const [{buy, repay}, setModal] = React.useState({buy: false, repay: false});
   const router = useRouter();
   const {data: invoices} = useAppSelector((state) => state.invoices);
   const {invoice, index} = React.useMemo(() => {
@@ -26,12 +27,24 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
   }, [invoices]);
 
   const toggleBuySharesModal = (open?: boolean) => {
-    setModal({buy: open != undefined ? open : !buy});
+    setModal({buy: open != undefined ? open : !buy, repay});
+  };
+
+  const toggleRepayInvoiceModal = (open?: boolean) => {
+    setModal({repay: open != undefined ? open : !repay, buy});
+  };
+
+  const downloadAttachments = async () => {
+    const folderList = await getFolderList(invoice.uri.split("/").reverse()[0]);
+  };
+
+  const handleWithdrawRewards = async () => {
+    await withdrawRewards({invoiceId: String(index)});
   };
 
   const handleApproveInvoice = async () => {
     try {
-      await approveInvoice({invoiceId: invoice.id});
+      await approveInvoice({invoiceId: String(index)});
     } catch (err: any) {
       console.log({err});
     }
@@ -75,7 +88,7 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
                   </div>
                   <div className="flex flex-col mb-5 w-40">
                     <span className="font-medium text-gray-400">Purchases</span>
-                    <span className="text-3xl font-normal">30</span>
+                    <span className="text-3xl font-normal">{invoice.purchases.length}</span>
                   </div>
                 </div>
               </Card>
@@ -83,13 +96,13 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
           </div>
           <div className="lg:w-2/3 w-full">
             <div className="text-center">
-              <h2 className="text-2xl font-thin mb-1">Payments Volume</h2>
+              <h2 className="text-2xl font-thin mb-1">Purchases Volume</h2>
             </div>
             <div className="h-5/6 pt-1">
               <Chart
                 data={invoice.purchases.map(({amount, timestamp}) => ({
                   xAxis: new Date(Number(timestamp) * 1000).toLocaleString().split(",")[0],
-                  yAxis: toBN(amount).mul(invoice.fractionalPrice).toString(),
+                  yAxis: toBN(amount).mul(invoice.fractionalPrice).toNumber(),
                 }))}
               />
             </div>
@@ -97,7 +110,7 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
         </div>
       </div>
       <div className="flex flex-col w-full px-20 mt-16">
-        <h2 className="text-2xl font-thin mb-4">Transactions</h2>
+        <h2 className="text-2xl font-thin mb-4">Purchases</h2>
         <DataTable
           headers={[
             {title: "#", value: "id"},
@@ -122,7 +135,10 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
               <h2 className="text-2xl font-thin mb-6">Download Attachments</h2>
             </div>
             <div className="grid content-center">
-              <Button className="rounded-md px-4 py-2 bg-gray-800/60 w-1/3 whitespace-nowrap">
+              <Button
+                className="rounded-md px-4 py-2 bg-gray-800/60 w-1/3 whitespace-nowrap"
+                onClick={downloadAttachments}
+              >
                 Invoice Details
               </Button>
             </div>
@@ -151,7 +167,12 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
                 </p>
               </div>
               <div className="grid content-center">
-                <Button className="rounded-md px-4 py-2 bg-gray-800/60 w-1/3">Pay</Button>
+                <Button
+                  className="rounded-md px-4 py-2 bg-gray-800/60 w-1/3"
+                  onClick={toggleRepayInvoiceModal as any}
+                >
+                  Pay
+                </Button>
               </div>
             </div>
           )}
@@ -178,8 +199,11 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
       <div className="flex flex-col items-center w-full px-20 mt-16">
         <Card className="w-1/2" render={invoice.status === 2}>
           <div className="grid content-center">
-            <Button className="rounded-md bg-gray-800/40 w-1/3">
-              <b>Get Reward!</b>
+            <Button
+              className="rounded-md px-4 py-2 bg-gray-800/60 w-1/3 whitespace-nowrap"
+              onClick={handleWithdrawRewards}
+            >
+              <b>Withdraw Rewards!</b>
             </Button>
           </div>
         </Card>
@@ -187,6 +211,13 @@ const InvoiceDetail: React.FunctionComponent<{}> = () => {
           open={buy}
           setOpen={toggleBuySharesModal}
           priceByShare={invoice.fractionalPrice}
+          tokenSymbol={invoice.token.symbol}
+          invoiceId={invoice.id}
+        />
+        <RepayInvoiceModal
+          open={repay}
+          setOpen={toggleRepayInvoiceModal}
+          repaymentAmount={invoice.repaymentAmount}
           tokenSymbol={invoice.token.symbol}
           invoiceId={invoice.id}
         />
@@ -229,6 +260,45 @@ const BuyModal: React.FunctionComponent<{
         />
         <Button colored className="py-2 px-6 mx-10" onClick={buyShares}>
           Buy
+        </Button>
+      </div>
+    </Modal>
+  );
+};
+
+const RepayInvoiceModal: React.FunctionComponent<{
+  open: boolean;
+  setOpen: Function;
+  repaymentAmount: string;
+  tokenSymbol: string;
+  invoiceId: string;
+}> = ({open, setOpen, repaymentAmount, tokenSymbol, invoiceId}) => {
+  const [repayment, setRepayment] = React.useState<number | undefined>();
+  const price = Number(repaymentAmount) * (repayment || 0);
+
+  const repay = async () => {
+    try {
+      await repayInvoice({invoiceId, amount: String(repayment)});
+    } catch (err: any) {
+      console.log({err});
+    }
+  };
+
+  return (
+    <Modal open={open} setModal={setOpen}>
+      <h4 className="text-xl">Repay</h4>
+      <div className="flex items-center">
+        <Input
+          name=""
+          placeholder="Amount"
+          value={repayment}
+          onChange={(e) => setRepayment(Number(e.target.value))}
+          rightImg={
+            <span className="text-lg whitespace-nowrap mx-10">{`Amount: ${repaymentAmount}`}</span>
+          }
+        />
+        <Button colored className="py-2 px-6 mx-10" onClick={repay}>
+          Pay
         </Button>
       </div>
     </Modal>

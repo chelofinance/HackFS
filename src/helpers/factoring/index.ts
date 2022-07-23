@@ -154,8 +154,29 @@ export const buyInvoices = async ({
   const token = <MockERC20>attach("ERC20", addresses.polygon.token);
   const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring);
 
-  await token.approve(factoring.address, price);
+  const {wait} = await token.approve(factoring.address, price);
+  await wait();
   return await factoring.buyInvoice(invoiceId, fractions);
+};
+
+export const repayInvoice = async ({
+  invoiceId,
+  amount,
+}: {
+  invoiceId: string;
+  amount: string;
+}) => {
+  const token = <MockERC20>attach("ERC20", addresses.polygon.token);
+  const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring);
+
+  const {wait} = await token.approve(factoring.address, amount);
+  await wait();
+  return await factoring.repayInvoice(invoiceId, amount);
+};
+
+export const withdrawRewards = async ({invoiceId}: {invoiceId: string}) => {
+  const factoring = <Factoring>attach("Factoring", addresses.polygon.factoring);
+  return await factoring.withdraw(invoiceId);
 };
 
 export const approveInvoice = async ({invoiceId}: {invoiceId: string}) => {

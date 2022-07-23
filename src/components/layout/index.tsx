@@ -17,7 +17,6 @@ const Layout: React.FunctionComponent<React.PropsWithChildren<{}>> = ({children}
     try {
       await connectMetamask();
       await switchNetwork(137); //rinkeby
-      console.log("LOAD APP");
     } catch (err: any) {
       if (err.code === 4902)
         await addNetwork({

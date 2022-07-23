@@ -13,6 +13,9 @@ const Navbar = () => {
         </span>
       </div>
       <div className="w-full block flex-grow lg:flex lg:items-center lg:w-auto text-white">
+        <div className="border-l border-gray-300/25 px-4 text-gray-300">
+          <Link href="/app">dashboard</Link>
+        </div>
         <div className="border-l border-gray-300/25 pl-4 text-gray-300">
           <Link href="/app/create">create invoice</Link>
         </div>

@@ -5,6 +5,7 @@ import {connectMetamask, isWeb3Enabled} from "@helpers/index";
 import {getDaoAddress, getAragonDAO} from "@helpers/aragon";
 import {getBuys, getInvoices} from "@helpers/factoring";
 import {getMockInvoices, timeout} from "@helpers/mocks";
+import {getFolderList} from "@helpers/storage/ipfs";
 
 export const onConnectWallet = createAsyncThunk(actionTypes.CONNECT_WALLET, async () => {
   if (!(await isWeb3Enabled())) return "";
